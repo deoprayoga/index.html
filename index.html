@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lamp Rumah — On/Off + Brightness + Warna (Single File)</title>
+  <meta name="description" content="Kontrol lamp rumah: on/off, kecerahan, suhu warna, preset, dan simpan otomatis. Full HTML/CSS/JS satu file." />
+  <style>
+    :root{
+      --bg:#0b0f14;--panel:#0f1722;--muted:#172030;--text:#e9eef5;--sub:#b7c4d6;--pri:#6ee7b7;--accent:#60a5fa;--warn:#f59e0b;--danger:#ef4444;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --br:18px;
+      --glow:#ffdca8; /* warna awal cahaya */
+      --glow-alpha:0.0; /* intensitas */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0f14,#0e141d);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .container{max-width:1100px;margin:auto;padding:24px}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--pri));display:grid;place-items:center;box-shadow:var(--shadow);color:#072b37;font-weight:900}
+    h1{font-size:22px;margin:0}
+
+    .layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+
+    /* Scene (ruangan + lampu) */
+    .scene{position:relative;background:radial-gradient(1200px 600px at 50% 30%, color-mix(in srgb, var(--glow) calc(var(--glow-alpha)*100%), transparent), transparent 60%), #0b0f14; border:1px solid #1b2737;border-radius:var(--br);box-shadow:var(--shadow);min-height:420px;overflow:hidden}
+    .room{position:absolute;inset:0;background:
+      linear-gradient(180deg, #0e1621 0%, #0a1119 60%),
+      repeating-linear-gradient(90deg,#0e141d,#0e141d 10px,#0d121a 10px,#0d121a 20px);
+      opacity:.8
+    }
+    .lamp{position:absolute;left:50%;top:30px;transform:translateX(-50%)}
+    .lamp svg{display:block}
+    .glow{position:absolute;left:50%;top:120px;transform:translateX(-50%);width:800px;height:800px;pointer-events:none;border-radius:50%;filter:blur(60px);background:radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--glow) calc(var(--glow-alpha)*100%), transparent), transparent 60%);opacity:.95;}
+
+    .statusbar{position:absolute;right:12px;top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#0f1722;border:1px solid #233146;color:#b6c5d8;font-size:12px}
+
+    /* Panel kontrol */
+    .panel{background:var(--panel);border:1px solid #1e2a3a;border-radius:var(--br);box-shadow:var(--shadow);padding:16px}
+    .section{margin-bottom:16px}
+    .section h3{margin:0 0 8px;font-size:14px;color:#c7d4e6}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+
+    .btn{background:linear-gradient(135deg,var(--pri),#34d399);color:#04281f;border:none;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);transition:transform .06s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.ghost{background:transparent;border:1px solid #2a384a;color:var(--text);box-shadow:none}
+    .btn.warn{background:linear-gradient(135deg,#fcd34d,var(--warn));color:#3a2a02}
+    .btn.danger{background:linear-gradient(135deg,#fb7185,var(--danger));color:#33050b}
+
+    .switch{position:relative;width:72px;height:38px;background:#13202d;border:1px solid #223246;border-radius:999px;cursor:pointer}
+    .knob{position:absolute;top:3px;left:3px;width:32px;height:32px;border-radius:999px;background:#e5f8f1;box-shadow:0 2px 0 #0002,inset 0 0 0 2px #d0eee5;transition:left .15s}
+    .switch.on{background:#1d3b32}
+    .switch.on .knob{left:37px;background:#b9f6dc}
+
+    .slider{appearance:none;width:100%;height:10px;border-radius:999px;background:#0e1a27;border:1px solid #233246;outline:none}
+    .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#6ee7b7;border:2px solid #05352a;cursor:pointer}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+    .select, input[type="text"]{background:#0f1722;border:1px solid #233246;color:var(--text);border-radius:10px;padding:10px;width:100%}
+
+    footer{margin-top:16px;color:#a9b8cc;font-size:12px}
+    kbd{background:#102030;border:1px solid #223246;border-bottom:2px solid #172435;border-radius:6px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">LP</div>
+        <h1>Kontrol Lamp Rumah</h1>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="btnNight">Mode Malam</button>
+        <button class="btn ghost" id="btnReset">Reset</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Scene -->
+      <section class="scene" id="scene">
+        <div class="room"></div>
+
+        <!-- Lamp body (SVG) -->
+        <div class="lamp" aria-hidden="true">
+          <svg width="220" height="260" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Kabel -->
+            <rect x="108" y="0" width="4" height="60" fill="#1c2a3b"/>
+            <!-- Dudukan -->
+            <path d="M70 72 C70 58 150 58 150 72 L150 110 C150 126 70 126 70 110 Z" fill="#0f1b2a" stroke="#21405d"/>
+            <!-- Bohlam -->
+            <defs>
+              <radialGradient id="bulbGlow" cx="50%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#fff"/>
+                <stop offset="70%" stop-color="#ffe9c2"/>
+                <stop offset="100%" stop-color="#ffd18b"/>
+              </radialGradient>
+            </defs>
+            <ellipse id="bulb" cx="110" cy="150" rx="70" ry="80" fill="url(#bulbGlow)" stroke="#3a4a62"/>
+            <!-- Kap -->
+            <path d="M40 80 L180 80 L160 120 L60 120 Z" fill="#0e1826" stroke="#25405c"/>
+            <!-- Bayangan -->
+            <ellipse cx="110" cy="246" rx="58" ry="10" fill="#0007"/>
+          </svg>
+        </div>
+        <!-- Glow overlay -->
+        <div class="glow" id="glow"></div>
+
+        <!-- Status badge -->
+        <div class="statusbar">
+          <span class="pill" id="pillPower">Daya: Mati</span>
+          <span class="pill" id="pillLevel">Kecerahan: 0%</span>
+          <span class="pill" id="pillTemp">Warna: Hangat</span>
+          <span class="pill" id="pillRoom">Ruangan: Ruang Tamu</span>
+        </div>
+      </section>
+
+      <!-- Panel Kontrol -->
+      <aside class="panel">
+        <div class="section">
+          <h3>Daya</h3>
+          <div class="row" style="align-items:center;gap:14px">
+            <div id="switch" class="switch" role="switch" aria-checked="false" tabindex="0">
+              <div class="knob"></div>
+            </div>
+            <button class="btn" id="btnToggle">On/Off</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Kecerahan</h3>
+          <input id="rangeBright" class="slider" type="range" min="0" max="100" value="0" />
+        </div>
+
+        <div class="section">
+          <h3>Suhu Warna</h3>
+          <div class="grid">
+            <div>
+              <small class="sub">Hangat (2700K) → Netral (4000K) → Dingin (6500K)</small>
+              <input id="rangeTemp" class="slider" type="range" min="2700" max="6500" value="3000" step="50" />
+            </div>
+            <div class="row">
+              <button class="btn ghost" data-temp="2700">Hangat</button>
+              <button class="btn ghost" data-temp="4000">Netral</button>
+              <button class="btn ghost" data-temp="6500">Dingin</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Preset Cepat</h3>
+          <div class="row">
+            <button class="btn warn" data-preset='{"b":100,"k":3000}'>Malam Santai</button>
+            <button class="btn" data-preset='{"b":75,"k":4000}'>Baca Buku</button>
+            <button class="btn" data-preset='{"b":40,"k":2700}'>Tidur</button>
+            <button class="btn" data-preset='{"b":100,"k":6500}'>Kerja</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Ruangan</h3>
+          <div class="grid">
+            <select id="room" class="select">
+              <option>Ruang Tamu</option>
+              <option>Kamar Tidur</option>
+              <option>Dapur</option>
+              <option>Kamar Mandi</option>
+            </select>
+            <input id="sceneName" type="text" placeholder="Nama scene (opsional)"/>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Otomatis</h3>
+          <div class="grid">
+            <div class="row" style="align-items:center">
+              <label for="autoOff">Auto OFF (menit):</label>
+              <input id="autoOff" class="select" type="number" min="0" max="180" value="0"/>
+              <button class="btn ghost" id="applyAuto">Terapkan</button>
+            </div>
+          </div>
+          <small id="autoInfo" class="sub" style="color:#a7b6c9">Tidak ada timer aktif.</small>
+        </div>
+
+        <div class="row">
+          <button class="btn danger" id="clearState">Hapus Penyimpanan</button>
+        </div>
+
+        <footer>
+          Pintasan: <kbd>L</kbd> On/Off, <kbd>+</kbd>/<kbd>-</kbd> kecerahan, <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> preset.
+        </footer>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // ---- State & persist ----
+    const key = 'lampStateV1';
+    const state = Object.assign({
+      on:false,
+      b:0, // brightness 0..100
+      k:3000, // kelvin 2700..6500
+      room:'Ruang Tamu',
+      night:false,
+      autoMin:0,
+      autoUntil:null
+    }, JSON.parse(localStorage.getItem(key)||'{}'));
+
+    function save(){ localStorage.setItem(key, JSON.stringify(state)); }
+
+    // ---- Elements ----
+    const switchEl = document.getElementById('switch');
+    const btnToggle = document.getElementById('btnToggle');
+    const rangeB = document.getElementById('rangeBright');
+    const rangeK = document.getElementById('rangeTemp');
+    const roomSel = document.getElementById('room');
+    const sceneName = document.getElementById('sceneName');
+    const glow = document.getElementById('glow');
+    const pillPower = document.getElementById('pillPower');
+    const pillLevel = document.getElementById('pillLevel');
+    const pillTemp = document.getElementById('pillTemp');
+    const pillRoom = document.getElementById('pillRoom');
+    const btnNight = document.getElementById('btnNight');
+    const btnReset = document.getElementById('btnReset');
+    const autoOff = document.getElementById('autoOff');
+    const applyAuto = document.getElementById('applyAuto');
+    const autoInfo = document.getElementById('autoInfo');
+
+    // ---- Mapping Kelvin → warna ----
+    function kelvinToRGB(k){
+      // k in Kelvin 1000..40000, approximate
+      k = Math.max(1000, Math.min(40000, k)) / 100;
+      let r,g,b;
+      // red
+      if(k <= 66) r = 255; else r = 329.698727446 * Math.pow(k - 60, -0.1332047592);
+      // green
+      if(k <= 66) g = 99.4708025861 * Math.log(k) - 161.1195681661;
+      else g = 288.1221695283 * Math.pow(k - 60, -0.0755148492);
+      // blue
+      if(k >= 66) b = 255; else if(k <= 19) b = 0; else b = 138.5177312231 * Math.log(k - 10) - 305.0447927307;
+      return `rgb(${clamp(Math.round(r),0,255)}, ${clamp(Math.round(g),0,255)}, ${clamp(Math.round(b),0,255)})`;
+    }
+    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+
+    // ---- Render ----
+    function render(){
+      // Sync inputs
+      switchEl.classList.toggle('on', state.on);
+      switchEl.setAttribute('aria-checked', String(state.on));
+      rangeB.value = state.b;
+      rangeK.value = state.k;
+      roomSel.value = state.room;
+
+      // Glow strength & color
+      const color = kelvinToRGB(state.k);
+      const alpha = (state.on? state.b : 0)/100; // 0..1
+      document.documentElement.style.setProperty('--glow', color);
+      document.documentElement.style.setProperty('--glow-alpha', alpha);
+
+      // Badges
+      pillPower.textContent = 'Daya: ' + (state.on ? 'Menyala' : 'Mati');
+      pillLevel.textContent = 'Kecerahan: ' + state.b + '%';
+      const labelTemp = state.k <= 3200 ? 'Hangat' : state.k >= 5200 ? 'Dingin' : 'Netral';
+      pillTemp.textContent = 'Warna: ' + labelTemp + ` (${state.k}K)`;
+      pillRoom.textContent = 'Ruangan: ' + state.room + (sceneName.value? ' • ' + sceneName.value : '');
+
+      // Mode malam
+      document.body.style.background = state.night ? '#06090d' : 'linear-gradient(180deg,#0b0f14,#0e141d)';
+      btnNight.textContent = state.night ? 'Mode Siang' : 'Mode Malam';
+
+      save();
+    }
+
+    // ---- Events ----
+    function toggle(){ state.on = !state.on; if(state.on && state.b===0) state.b = 60; render(); }
+    switchEl.addEventListener('click', toggle);
+    switchEl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(); }});
+    btnToggle.addEventListener('click', toggle);
+
+    rangeB.addEventListener('input', e=>{ state.b = Number(e.target.value); state.on = state.b>0; render(); });
+    rangeK.addEventListener('input', e=>{ state.k = Number(e.target.value); render(); });
+
+    document.querySelectorAll('[data-temp]').forEach(btn=> btn.addEventListener('click',()=>{ state.k = Number(btn.getAttribute('data-temp')); render(); }));
+
+    document.querySelectorAll('[data-preset]').forEach(btn=> btn.addEventListener('click',()=>{
+      try{ const p = JSON.parse(btn.getAttribute('data-preset')); state.on=true; state.b=p.b; state.k=p.k; render(); }catch{}
+    }));
+
+    roomSel.addEventListener('change', e=>{ state.room = e.target.value; render(); });
+    sceneName.addEventListener('input', render);
+
+    btnNight.addEventListener('click', ()=>{ state.night = !state.night; render(); });
+    btnReset.addEventListener('click', ()=>{ Object.assign(state,{on:false,b:0,k:3000,night:false}); render(); });
+
+    // Auto OFF timer
+    let timer = null;
+    applyAuto.addEventListener('click', ()=>{
+      state.autoMin = Number(autoOff.value)||0;
+      if(timer) { clearTimeout(timer); timer=null; }
+      if(state.autoMin>0){
+        const ms = state.autoMin*60*1000;
+        state.autoUntil = Date.now()+ms; tick();
+        timer=setTimeout(()=>{ state.on=false; render(); autoInfo.textContent='Timer selesai. Lampu mati.'; timer=null; state.autoUntil=null; save(); }, ms);
+      }else{
+        state.autoUntil=null; autoInfo.textContent='Tidak ada timer aktif.';
+      }
+      save();
+    });
+
+    function tick(){
+      if(!state.autoUntil) return;
+      const remain = Math.max(0, state.autoUntil - Date.now());
+      const m = Math.floor(remain/60000); const s = Math.floor((remain%60000)/1000);
+      autoInfo.textContent = `Akan mati dalam ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if(remain>0) requestAnimationFrame(tick);
+    }
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if(e.target instanceof HTMLInputElement) return; // ignore typing in inputs
+      if(e.key.toLowerCase()==='l'){ toggle(); }
+      if(e.key==='+'){ state.b = clamp(state.b+5,0,100); state.on = state.b>0; render(); }
+      if(e.key==='-'){ state.b = clamp(state.b-5,0,100); state.on = state.b>0; render(); }
+      if(e.key==='1'){ state.on=true; state.b=100; state.k=3000; render(); }
+      if(e.key==='2'){ state.on=true; state.b=75; state.k=4000; render(); }
+      if(e.key==='3'){ state.on=true; state.b=40; state.k=2700; render(); }
+    });
+
+    // Init
+    rangeB.value = state.b; rangeK.value = state.k; roomSel.value = state.room; autoOff.value = state.autoMin || 0; render(); tick();
+  </script>
+</body>
+</html>
