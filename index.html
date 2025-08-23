@@ -3,336 +3,409 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lamp Rumah — On/Off + Brightness + Warna (Single File)</title>
-  <meta name="description" content="Kontrol lamp rumah: on/off, kecerahan, suhu warna, preset, dan simpan otomatis. Full HTML/CSS/JS satu file." />
+  <title>KenzWeb — Jasa Joki Website | Cepat, Rapi, Terpercaya</title>
+  <meta name="description" content="KenzWeb — jasa joki website: pembuatan, perbaikan, optimasi SEO, dan maintenance. Responsif, cepat selesai, harga fleksibel. Klik untuk chat WhatsApp." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta property="og:title" content="KenzWeb — Jasa Joki Website" />
+  <meta property="og:description" content="Butuh bantuan bikin/beresin website? KenzWeb siap bantu!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/0ea5e9/ffffff&text=KenzWeb" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b0f14;--panel:#0f1722;--muted:#172030;--text:#e9eef5;--sub:#b7c4d6;--pri:#6ee7b7;--accent:#60a5fa;--warn:#f59e0b;--danger:#ef4444;
-      --shadow:0 12px 40px rgba(0,0,0,.35);
-      --br:18px;
-      --glow:#ffdca8; /* warna awal cahaya */
-      --glow-alpha:0.0; /* intensitas */
+      --bg:#0b1220; --panel:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --brand:#0ea5e9; --brand-2:#22d3ee; --ring:rgba(34,211,238,.35);
+      --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0f14,#0e141d);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    .container{max-width:1100px;margin:auto;padding:24px}
-
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--pri));display:grid;place-items:center;box-shadow:var(--shadow);color:#072b37;font-weight:900}
-    h1{font-size:22px;margin:0}
-
-    .layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-    @media(max-width:900px){.layout{grid-template-columns:1fr;}}
-
-    /* Scene (ruangan + lampu) */
-    .scene{position:relative;background:radial-gradient(1200px 600px at 50% 30%, color-mix(in srgb, var(--glow) calc(var(--glow-alpha)*100%), transparent), transparent 60%), #0b0f14; border:1px solid #1b2737;border-radius:var(--br);box-shadow:var(--shadow);min-height:420px;overflow:hidden}
-    .room{position:absolute;inset:0;background:
-      linear-gradient(180deg, #0e1621 0%, #0a1119 60%),
-      repeating-linear-gradient(90deg,#0e141d,#0e141d 10px,#0d121a 10px,#0d121a 20px);
-      opacity:.8
-    }
-    .lamp{position:absolute;left:50%;top:30px;transform:translateX(-50%)}
-    .lamp svg{display:block}
-    .glow{position:absolute;left:50%;top:120px;transform:translateX(-50%);width:800px;height:800px;pointer-events:none;border-radius:50%;filter:blur(60px);background:radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--glow) calc(var(--glow-alpha)*100%), transparent), transparent 60%);opacity:.95;}
-
-    .statusbar{position:absolute;right:12px;top:12px;display:flex;gap:8px;flex-wrap:wrap}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#0f1722;border:1px solid #233146;color:#b6c5d8;font-size:12px}
-
-    /* Panel kontrol */
-    .panel{background:var(--panel);border:1px solid #1e2a3a;border-radius:var(--br);box-shadow:var(--shadow);padding:16px}
-    .section{margin-bottom:16px}
-    .section h3{margin:0 0 8px;font-size:14px;color:#c7d4e6}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-
-    .btn{background:linear-gradient(135deg,var(--pri),#34d399);color:#04281f;border:none;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);transition:transform .06s ease}
-    .btn:hover{transform:translateY(-1px)}
-    .btn.ghost{background:transparent;border:1px solid #2a384a;color:var(--text);box-shadow:none}
-    .btn.warn{background:linear-gradient(135deg,#fcd34d,var(--warn));color:#3a2a02}
-    .btn.danger{background:linear-gradient(135deg,#fb7185,var(--danger));color:#33050b}
-
-    .switch{position:relative;width:72px;height:38px;background:#13202d;border:1px solid #223246;border-radius:999px;cursor:pointer}
-    .knob{position:absolute;top:3px;left:3px;width:32px;height:32px;border-radius:999px;background:#e5f8f1;box-shadow:0 2px 0 #0002,inset 0 0 0 2px #d0eee5;transition:left .15s}
-    .switch.on{background:#1d3b32}
-    .switch.on .knob{left:37px;background:#b9f6dc}
-
-    .slider{appearance:none;width:100%;height:10px;border-radius:999px;background:#0e1a27;border:1px solid #233246;outline:none}
-    .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#6ee7b7;border:2px solid #05352a;cursor:pointer}
-
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media(max-width:600px){.grid{grid-template-columns:1fr}}
-
-    .select, input[type="text"]{background:#0f1722;border:1px solid #233246;color:var(--text);border-radius:10px;padding:10px;width:100%}
-
-    footer{margin-top:16px;color:#a9b8cc;font-size:12px}
-    kbd{background:#102030;border:1px solid #223246;border-bottom:2px solid #172435;border-radius:6px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    html,body{margin:0;padding:0;scroll-behavior:smooth;background:linear-gradient(180deg,#0b1220 0%,#0b1220 20%,#0f172a 100%);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1200px,92%);margin-inline:auto}
+    .btn{display:inline-flex;gap:.5rem;align-items:center;border:1px solid transparent;padding:.85rem 1.05rem;border-radius:14px;font-weight:700;letter-spacing:.2px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#001018;box-shadow:0 10px 24px rgba(14,165,233,.25);transition:.2s}
+    .btn:hover{transform:translateY(-2px);filter:saturate(1.1)}
+    .btn.ghost{background:transparent;border-color:#1f2a44;color:var(--text)}
+    .btn.white{background:#fff;color:#0b1220}
+    .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;background:#0b233a;border:1px solid #153050;color:#a8d8ff;font-size:.85rem}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(148,163,184,.1)}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:.7rem;align-items:center}
+    .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 210deg at 50% 50%,var(--brand),#4f46e5,var(--brand-2));box-shadow:inset 0 0 20px rgba(255,255,255,.18),0 6px 16px rgba(14,165,233,.35)}
+    .brand h1{font-size:1.15rem;margin:0;font-weight:800;letter-spacing:.2px}
+    .navlinks{display:flex;gap:1rem;align-items:center}
+    .navlinks a{opacity:.9}
+    .navlinks a:hover{opacity:1}
+    .hero{position:relative;padding:72px 0 36px}
+    .grid{display:grid;gap:22px}
+    .hero h2{font-size:clamp(2rem,4vw,3rem);line-height:1.15;margin:10px 0 6px;font-weight:800}
+    .hero p{margin:0 0 18px;color:var(--muted);font-size:1.05rem}
+    .hero .panel{background:radial-gradient(1200px 300px at 50% -20%,rgba(34,211,238,.15),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:16px}
+    .hero .cta{display:flex;gap:10px;flex-wrap:wrap}
+    .twocol{grid-template-columns:1.1fr .9fr}
+    @media(max-width:900px){.twocol{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#0c192e,rgba(12,25,46,.6));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px}
+    .card h3{margin:0 0 6px}
+    .list{display:grid;gap:10px;margin:10px 0 0;padding:0}
+    .list li{list-style:none;display:flex;gap:.6rem;align-items:flex-start}
+    .icon{width:20px;height:20px;display:inline-grid;place-items:center;border-radius:6px;background:#0a223d;border:1px solid #153050}
+    .section{padding:36px 0}
+    .section h2{font-size:1.6rem;margin:0 0 12px}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media(max-width:900px){.pricing{grid-template-columns:1fr}}
+    .price{position:relative}
+    .price .badge{position:absolute;top:12px;right:12px}
+    .price .num{font-size:2rem;font-weight:800}
+    .tag{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(148,163,184,.2);font-size:.85rem;color:var(--muted)}
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media(max-width:900px){.gallery{grid-template-columns:1fr 1fr}}
+    .work{aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(148,163,184,.12);position:relative}
+    .work img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05)}
+    .work span{position:absolute;left:10px;bottom:10px;background:rgba(11,18,32,.75);backdrop-filter:blur(6px);border:1px solid rgba(148,163,184,.18);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+    .step{position:relative;padding:14px;border-radius:16px;border:1px solid rgba(148,163,184,.12);background:#0c192e}
+    .step .n{width:28px;height:28px;border-radius:9px;background:#0a223d;border:1px solid #153050;display:inline-grid;place-items:center;margin-bottom:6px}
+    .faq{display:grid;gap:10px}
+    details{border:1px solid rgba(148,163,184,.12);background:#0c192e;border-radius:14px;padding:12px}
+    details summary{cursor:pointer;font-weight:600}
+    footer{padding:30px 0;border-top:1px solid rgba(148,163,184,.12);color:var(--muted)}
+    .float-wa{position:fixed;right:18px;bottom:18px;z-index:60}
+    .float-wa a{display:inline-flex;align-items:center;gap:.5rem;background:#25d366;color:#032b12;padding:.8rem 1rem;border-radius:999px;font-weight:800;border:2px solid #1ab455;box-shadow:0 10px 20px rgba(37,211,102,.35)}
+    .kbd{padding:.1rem .4rem;border:1px solid #2b3c5e;background:#0b1e39;border-radius:6px;font-size:.85rem;color:#a8d8ff}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);margin:18px 0}
+    .note{font-size:.9rem;color:var(--muted)}
   </style>
+  <script>
+    // --- Konfigurasi nomor WhatsApp (ubah jika perlu) ---
+    const WA_NUMBER_LOCAL = "089523679756"; // nomor lokal diawali 0
+    const WA_NUMBER = WA_NUMBER_LOCAL.replace(/^0/,"62"); // diubah ke format internasional 62xxxxxxxxxxx
+    const WA_BASE = `https://wa.me/${WA_NUMBER}`;
+
+    // Buat URL WhatsApp dengan pesan
+    function waUrlWithMessage(msg){
+      return `${WA_BASE}?text=${encodeURIComponent(msg)}`;
+    }
+
+    // Isi semua tombol WA saat halaman siap
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-wa]').forEach(el => {
+        const text = el.getAttribute('data-wa') || 'Halo KenzWeb! Saya tertarik dengan jasanya.';
+        el.setAttribute('href', waUrlWithMessage(text));
+      });
+
+      // Form ke WhatsApp
+      const form = document.getElementById('whatsapp-form');
+      if(form){
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nama = form.nama.value.trim();
+          const tipe = form.tipe.value;
+          const budget = form.budget.value.trim();
+          const pesan = form.pesan.value.trim();
+          const msg = `Halo KenzWeb!\n\nNama: ${nama || '-'}\nKebutuhan: ${tipe}\nBudget: ${budget || '-'}\nPesan: ${pesan || '-'}\n\nMohon dibantu ya 🙏`;
+          window.open(waUrlWithMessage(msg), '_blank');
+        });
+      }
+
+      // Smooth scroll close mobile menu
+      document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', () => {
+          const cb = document.getElementById('nav-toggle');
+          if(cb) cb.checked = false;
+        });
+      });
+    });
+  </script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">LP</div>
-        <h1>Kontrol Lamp Rumah</h1>
-      </div>
-      <div class="row">
-        <button class="btn ghost" id="btnNight">Mode Malam</button>
-        <button class="btn ghost" id="btnReset">Reset</button>
-      </div>
-    </header>
-
-    <div class="layout">
-      <!-- Scene -->
-      <section class="scene" id="scene">
-        <div class="room"></div>
-
-        <!-- Lamp body (SVG) -->
-        <div class="lamp" aria-hidden="true">
-          <svg width="220" height="260" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Kabel -->
-            <rect x="108" y="0" width="4" height="60" fill="#1c2a3b"/>
-            <!-- Dudukan -->
-            <path d="M70 72 C70 58 150 58 150 72 L150 110 C150 126 70 126 70 110 Z" fill="#0f1b2a" stroke="#21405d"/>
-            <!-- Bohlam -->
-            <defs>
-              <radialGradient id="bulbGlow" cx="50%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#fff"/>
-                <stop offset="70%" stop-color="#ffe9c2"/>
-                <stop offset="100%" stop-color="#ffd18b"/>
-              </radialGradient>
-            </defs>
-            <ellipse id="bulb" cx="110" cy="150" rx="70" ry="80" fill="url(#bulbGlow)" stroke="#3a4a62"/>
-            <!-- Kap -->
-            <path d="M40 80 L180 80 L160 120 L60 120 Z" fill="#0e1826" stroke="#25405c"/>
-            <!-- Bayangan -->
-            <ellipse cx="110" cy="246" rx="58" ry="10" fill="#0007"/>
-          </svg>
+  <!-- Header / Nav -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <div class></div>
+          <h1>KenzWeb</h1>
+          
         </div>
-        <!-- Glow overlay -->
-        <div class="glow" id="glow"></div>
-
-        <!-- Status badge -->
-        <div class="statusbar">
-          <span class="pill" id="pillPower">Daya: Mati</span>
-          <span class="pill" id="pillLevel">Kecerahan: 0%</span>
-          <span class="pill" id="pillTemp">Warna: Hangat</span>
-          <span class="pill" id="pillRoom">Ruangan: Ruang Tamu</span>
+        <input id="nav-toggle" type="checkbox" hidden>
+        <label for="nav-toggle" class="btn ghost" style="display:none" id="nav-btn">Menu</label>
+        <div class="navlinks" id="nav">
+          <a href="#layanan">Layanan</a>
+          <a href="#harga">Harga</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#proses">Proses</a>
+          <a href="#faq">FAQ</a>
+          <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi project website.">Chat WhatsApp</a>
         </div>
-      </section>
-
-      <!-- Panel Kontrol -->
-      <aside class="panel">
-        <div class="section">
-          <h3>Daya</h3>
-          <div class="row" style="align-items:center;gap:14px">
-            <div id="switch" class="switch" role="switch" aria-checked="false" tabindex="0">
-              <div class="knob"></div>
-            </div>
-            <button class="btn" id="btnToggle">On/Off</button>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Kecerahan</h3>
-          <input id="rangeBright" class="slider" type="range" min="0" max="100" value="0" />
-        </div>
-
-        <div class="section">
-          <h3>Suhu Warna</h3>
-          <div class="grid">
-            <div>
-              <small class="sub">Hangat (2700K) → Netral (4000K) → Dingin (6500K)</small>
-              <input id="rangeTemp" class="slider" type="range" min="2700" max="6500" value="3000" step="50" />
-            </div>
-            <div class="row">
-              <button class="btn ghost" data-temp="2700">Hangat</button>
-              <button class="btn ghost" data-temp="4000">Netral</button>
-              <button class="btn ghost" data-temp="6500">Dingin</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Preset Cepat</h3>
-          <div class="row">
-            <button class="btn warn" data-preset='{"b":100,"k":3000}'>Malam Santai</button>
-            <button class="btn" data-preset='{"b":75,"k":4000}'>Baca Buku</button>
-            <button class="btn" data-preset='{"b":40,"k":2700}'>Tidur</button>
-            <button class="btn" data-preset='{"b":100,"k":6500}'>Kerja</button>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Ruangan</h3>
-          <div class="grid">
-            <select id="room" class="select">
-              <option>Ruang Tamu</option>
-              <option>Kamar Tidur</option>
-              <option>Dapur</option>
-              <option>Kamar Mandi</option>
-            </select>
-            <input id="sceneName" type="text" placeholder="Nama scene (opsional)"/>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Otomatis</h3>
-          <div class="grid">
-            <div class="row" style="align-items:center">
-              <label for="autoOff">Auto OFF (menit):</label>
-              <input id="autoOff" class="select" type="number" min="0" max="180" value="0"/>
-              <button class="btn ghost" id="applyAuto">Terapkan</button>
-            </div>
-          </div>
-          <small id="autoInfo" class="sub" style="color:#a7b6c9">Tidak ada timer aktif.</small>
-        </div>
-
-        <div class="row">
-          <button class="btn danger" id="clearState">Hapus Penyimpanan</button>
-        </div>
-
-        <footer>
-          Pintasan: <kbd>L</kbd> On/Off, <kbd>+</kbd>/<kbd>-</kbd> kecerahan, <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> preset.
-        </footer>
-      </aside>
+      </nav>
     </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container grid twocol">
+      <div>
+        <span class="chip">🚀 KenzWeb · Jasa Joki Website</span>
+        <h2>Bikin & Beresin Website <br> Cepat, Rapi, <span style="background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent">Terpercaya</span></h2>
+        <p>Butuh landing page, toko online, atau custom web apps? KenzWeb siap bantu dari 0 sampai online. Gratis konsultasi & revisi minor.</p>
+        <div class="cta">
+          <a class="btn" data-wa="Halo KenzWeb! Saya mau order jasa project website.">Mulai via WhatsApp</a>
+          <a href="#harga" class="btn ghost">Lihat Paket Harga</a>
+        </div>
+        <div class="note" style="margin-top:10px">Respon cepat • Garansi online • Pembayaran fleksibel</div>
+      </div>
+      <div class="panel">
+        <div class="card">
+          <h3 style="margin:0">Form Cepat (otomatis kirim ke WhatsApp)</h3>
+          <form id="whatsapp-form" style="margin-top:10px;display:grid;gap:10px">
+            <label>Nama
+              <input required name="nama" placeholder="Nama kamu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text);outline-color:var(--ring)">
+            </label>
+            <label>Kebutuhan
+              <select name="tipe" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
+                <option>Landing Page</option>
+                <option>E‑Commerce (Toko Online)</option>
+                <option>Company Profile</option>
+                <option>Perbaikan / Maintenance</option>
+                <option>Custom Web App</option>
+                <option>Optimasi SEO</option>
+              </select>
+            </label>
+            <label>Budget (opsional)
+              <input name="budget" placeholder="Contoh: 2–5 juta" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
+            </label>
+            <label>Pesan (opsional)
+              <textarea name="pesan" rows="3" placeholder="Ceritakan singkat kebutuhanmu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)"></textarea>
+            </label>
+            <button class="btn white" type="submit">Kirim ke WhatsApp</button>
+            <div class="note">Tip: tekan <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> untuk submit cepat.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layanan -->
+  <section class="section" id="layanan">
+    <div class="container">
+      <h2>Layanan KenzWeb</h2>
+      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card">
+          <h3>Landing Page</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Desain modern & mobile‑friendly</span></li>
+            <li><span class="icon">✓</span><span>Konversi tinggi, CTA jelas</span></li>
+            <li><span class="icon">✓</span><span>Integrasi WhatsApp & Form</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>E‑Commerce</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Keranjang, checkout, ongkir</span></li>
+            <li><span class="icon">✓</span><span>Payment gateway lokal</span></li>
+            <li><span class="icon">✓</span><span>Nota & stok sederhana</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Maintenance</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Perbaikan bug & backup</span></li>
+            <li><span class="icon">✓</span><span>Optimasi performa & keamanan</span></li>
+            <li><span class="icon">✓</span><span>Monitoring uptime</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Company Profile</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Halaman lengkap & profesional</span></li>
+            <li><span class="icon">✓</span><span>SEO dasar & Google Index</span></li>
+            <li><span class="icon">✓</span><span>Gratis 1 bulan support</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Custom Web App</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Dashboard, auth, CRUD</span></li>
+            <li><span class="icon">✓</span><span>Integrasi API & Webhook</span></li>
+            <li><span class="icon">✓</span><span>Dokumentasi singkat</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Optimasi SEO</h3>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Audit teknis & on‑page</span></li>
+            <li><span class="icon">✓</span><span>Konten & struktur keyword</span></li>
+            <li><span class="icon">✓</span><span>Kecepatan & Core Web Vitals</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Harga -->
+  <section class="section" id="harga">
+    <div class="container">
+      <h2>Paket Harga</h2>
+      <div class="pricing">
+        <div class="card price">
+          <span class="badge chip">Hemat</span>
+          <h3>Starter</h3>
+          <div class="num">Rp799K</div>
+          <div class="tag">Landing Page • 1‑3 Bagian</div>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Desain responsif</span></li>
+            <li><span class="icon">✓</span><span>Integrasi WhatsApp</span></li>
+            <li><span class="icon">✓</span><span>Gratis domain .my.id (1 thn)</span></li>
+          </ul>
+          <div class="divider"></div>
+          <a class="btn" data-wa="Halo, saya minat paket Starter Rp799K.">Pilih Paket</a>
+        </div>
+        <div class="card price" style="outline:2px solid var(--brand);outline-offset:3px">
+          <span class="badge chip">Terlaris</span>
+          <h3>Pro</h3>
+          <div class="num">Rp1,9Jt</div>
+          <div class="tag">Company Profile • 4‑8 Halaman</div>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Copywriting dasar</span></li>
+            <li><span class="icon">✓</span><span>Form kontak + email</span></li>
+            <li><span class="icon">✓</span><span>SEO dasar & Analytics</span></li>
+          </ul>
+          <div class="divider"></div>
+          <a class="btn" data-wa="Halo, saya minat paket Pro Rp1,9Jt.">Pilih Paket</a>
+        </div>
+        <div class="card price">
+          <span class="badge chip">Kustom</span>
+          <h3>Biz/E‑Com</h3>
+          <div class="num">Mulai Rp3,5Jt</div>
+          <div class="tag">Toko Online / Web App</div>
+          <ul class="list">
+            <li><span class="icon">✓</span><span>Keranjang & checkout</span></li>
+            <li><span class="icon">✓</span><span>Gateway pembayaran</span></li>
+            <li><span class="icon">✓</span><span>Admin panel sederhana</span></li>
+          </ul>
+          <div class="divider"></div>
+          <a class="btn" data-wa="Halo, saya minat paket Biz/E‑Com. Mohon konsultasi.">Konsultasi Dulu</a>
+        </div>
+      </div>
+      <div class="note" style="margin-top:10px">Harga dapat berubah sesuai kompleksitas. Tanyakan promo terbaru ya! 🎁</div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <h2>Contoh Pekerjaan</h2>
+      <div class="gallery">
+        <figure class="work"><img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=1200&auto=format&fit=crop" alt="Dashboard web"/><span>Dashboard Bisnis</span></figure>
+        <figure class="work"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Landing page"/><span>Landing Page Produk</span></figure>
+        <figure class="work"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="E‑commerce"/><span>Toko Online</span></figure>
+        <figure class="work"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1200&auto=format&fit=crop" alt="Company profile"/><span>Company Profile</span></figure>
+        <figure class="work"><img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop" alt="Blog SEO"/><span>Blog SEO</span></figure>
+        <figure class="work"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="Web app"/><span>Web App Kustom</span></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proses -->
+  <section class="section" id="proses">
+    <div class="container">
+      <h2>Alur Pengerjaan</h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><strong>Diskusi</strong><div class="note">Bahas tujuan, referensi, dan deadline.</div></div>
+        <div class="step"><div class="n">2</div><strong>Desain</strong><div class="note">Susun struktur & wireframe, minta persetujuan.</div></div>
+        <div class="step"><div class="n">3</div><strong>Develop</strong><div class="note">Implementasi fitur & konten, cek performa.</div></div>
+        <div class="step"><div class="n">4</div><strong>Live!</strong><div class="note">Deploy, serah terima, dan support pasca‑rilis.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimoni / FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <h2>FAQ & Testimoni</h2>
+      <div class="grid" style="grid-template-columns:1.1fr .9fr">
+        <div class="faq">
+          <details open>
+            <summary>Berapa lama pengerjaan?</summary>
+            <div class="note">Landing page umumnya 3‑7 hari kerja, project besar menyesuaikan scope.</div>
+          </details>
+          <details>
+            <summary>Apakah bisa revisi?</summary>
+            <div class="note">Bisa. Termasuk revisi minor (3x) pada fase design & finishing.</div>
+          </details>
+          <details>
+            <summary>Pembayaran bagaimana?</summary>
+            <div class="note">DP 30‑50% di awal, sisanya setelah website siap live.</div>
+          </details>
+          <details>
+            <summary>Apakah bisa maintenance bulanan?</summary>
+            <div class="note">Bisa, tersedia paket maintenance dengan SLA sederhana.</div>
+          </details>
+        </div>
+        <div class="card">
+          <h3>Klien kami berkata…</h3>
+          <ul class="list">
+            <li><span class="icon">★</span><span>“Cepat dan komunikatif. Landing page langsung menghasilkan lead.” — Raka</span></li>
+            <li><span class="icon">★</span><span>“Bug lama beres dalam sehari. Mantap!” — Sinta</span></li>
+            <li><span class="icon">★</span><span>“Toko online rapi, performa ngebut.” — Daniel</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA akhir -->
+  <section class="section">
+    <div class="container card" style="display:grid;gap:10px;align-items:center;grid-template-columns:1.2fr .8fr">
+      <div>
+        <h2 style="margin:0">Siap mulai bersama <strong>KenzWeb</strong>?</h2>
+        <p class="note">Klik tombol di sebelah untuk konsultasi gratis via WhatsApp.</p>
+      </div>
+      <div style="justify-self:end">
+        <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi & cek ketersediaan jadwal.">Konsultasi Gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>© <span id="year"></span> KenzWeb. Semua hak dilindungi.</div>
+      <div style="display:flex;gap:12px">
+        <a href="#layanan">Layanan</a>
+        <a href="#harga">Harga</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <div class="float-wa">
+    <a class="btn" style="background:#25d366;border-radius:999px;border-color:#1ab455;color:#032b12" data-wa="Halo KenzWeb! Saya ingin tanya soal jasa joki website.">💬 WhatsApp</a>
   </div>
 
   <script>
-    // ---- State & persist ----
-    const key = 'lampStateV1';
-    const state = Object.assign({
-      on:false,
-      b:0, // brightness 0..100
-      k:3000, // kelvin 2700..6500
-      room:'Ruang Tamu',
-      night:false,
-      autoMin:0,
-      autoUntil:null
-    }, JSON.parse(localStorage.getItem(key)||'{}'));
+    // Update tahun otomatis
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 
-    function save(){ localStorage.setItem(key, JSON.stringify(state)); }
-
-    // ---- Elements ----
-    const switchEl = document.getElementById('switch');
-    const btnToggle = document.getElementById('btnToggle');
-    const rangeB = document.getElementById('rangeBright');
-    const rangeK = document.getElementById('rangeTemp');
-    const roomSel = document.getElementById('room');
-    const sceneName = document.getElementById('sceneName');
-    const glow = document.getElementById('glow');
-    const pillPower = document.getElementById('pillPower');
-    const pillLevel = document.getElementById('pillLevel');
-    const pillTemp = document.getElementById('pillTemp');
-    const pillRoom = document.getElementById('pillRoom');
-    const btnNight = document.getElementById('btnNight');
-    const btnReset = document.getElementById('btnReset');
-    const autoOff = document.getElementById('autoOff');
-    const applyAuto = document.getElementById('applyAuto');
-    const autoInfo = document.getElementById('autoInfo');
-
-    // ---- Mapping Kelvin → warna ----
-    function kelvinToRGB(k){
-      // k in Kelvin 1000..40000, approximate
-      k = Math.max(1000, Math.min(40000, k)) / 100;
-      let r,g,b;
-      // red
-      if(k <= 66) r = 255; else r = 329.698727446 * Math.pow(k - 60, -0.1332047592);
-      // green
-      if(k <= 66) g = 99.4708025861 * Math.log(k) - 161.1195681661;
-      else g = 288.1221695283 * Math.pow(k - 60, -0.0755148492);
-      // blue
-      if(k >= 66) b = 255; else if(k <= 19) b = 0; else b = 138.5177312231 * Math.log(k - 10) - 305.0447927307;
-      return `rgb(${clamp(Math.round(r),0,255)}, ${clamp(Math.round(g),0,255)}, ${clamp(Math.round(b),0,255)})`;
-    }
-    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-
-    // ---- Render ----
-    function render(){
-      // Sync inputs
-      switchEl.classList.toggle('on', state.on);
-      switchEl.setAttribute('aria-checked', String(state.on));
-      rangeB.value = state.b;
-      rangeK.value = state.k;
-      roomSel.value = state.room;
-
-      // Glow strength & color
-      const color = kelvinToRGB(state.k);
-      const alpha = (state.on? state.b : 0)/100; // 0..1
-      document.documentElement.style.setProperty('--glow', color);
-      document.documentElement.style.setProperty('--glow-alpha', alpha);
-
-      // Badges
-      pillPower.textContent = 'Daya: ' + (state.on ? 'Menyala' : 'Mati');
-      pillLevel.textContent = 'Kecerahan: ' + state.b + '%';
-      const labelTemp = state.k <= 3200 ? 'Hangat' : state.k >= 5200 ? 'Dingin' : 'Netral';
-      pillTemp.textContent = 'Warna: ' + labelTemp + ` (${state.k}K)`;
-      pillRoom.textContent = 'Ruangan: ' + state.room + (sceneName.value? ' • ' + sceneName.value : '');
-
-      // Mode malam
-      document.body.style.background = state.night ? '#06090d' : 'linear-gradient(180deg,#0b0f14,#0e141d)';
-      btnNight.textContent = state.night ? 'Mode Siang' : 'Mode Malam';
-
-      save();
-    }
-
-    // ---- Events ----
-    function toggle(){ state.on = !state.on; if(state.on && state.b===0) state.b = 60; render(); }
-    switchEl.addEventListener('click', toggle);
-    switchEl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(); }});
-    btnToggle.addEventListener('click', toggle);
-
-    rangeB.addEventListener('input', e=>{ state.b = Number(e.target.value); state.on = state.b>0; render(); });
-    rangeK.addEventListener('input', e=>{ state.k = Number(e.target.value); render(); });
-
-    document.querySelectorAll('[data-temp]').forEach(btn=> btn.addEventListener('click',()=>{ state.k = Number(btn.getAttribute('data-temp')); render(); }));
-
-    document.querySelectorAll('[data-preset]').forEach(btn=> btn.addEventListener('click',()=>{
-      try{ const p = JSON.parse(btn.getAttribute('data-preset')); state.on=true; state.b=p.b; state.k=p.k; render(); }catch{}
-    }));
-
-    roomSel.addEventListener('change', e=>{ state.room = e.target.value; render(); });
-    sceneName.addEventListener('input', render);
-
-    btnNight.addEventListener('click', ()=>{ state.night = !state.night; render(); });
-    btnReset.addEventListener('click', ()=>{ Object.assign(state,{on:false,b:0,k:3000,night:false}); render(); });
-
-    // Auto OFF timer
-    let timer = null;
-    applyAuto.addEventListener('click', ()=>{
-      state.autoMin = Number(autoOff.value)||0;
-      if(timer) { clearTimeout(timer); timer=null; }
-      if(state.autoMin>0){
-        const ms = state.autoMin*60*1000;
-        state.autoUntil = Date.now()+ms; tick();
-        timer=setTimeout(()=>{ state.on=false; render(); autoInfo.textContent='Timer selesai. Lampu mati.'; timer=null; state.autoUntil=null; save(); }, ms);
-      }else{
-        state.autoUntil=null; autoInfo.textContent='Tidak ada timer aktif.';
-      }
-      save();
-    });
-
-    function tick(){
-      if(!state.autoUntil) return;
-      const remain = Math.max(0, state.autoUntil - Date.now());
-      const m = Math.floor(remain/60000); const s = Math.floor((remain%60000)/1000);
-      autoInfo.textContent = `Akan mati dalam ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-      if(remain>0) requestAnimationFrame(tick);
-    }
-
-    // Keyboard shortcuts
-    window.addEventListener('keydown', (e)=>{
-      if(e.target instanceof HTMLInputElement) return; // ignore typing in inputs
-      if(e.key.toLowerCase()==='l'){ toggle(); }
-      if(e.key==='+'){ state.b = clamp(state.b+5,0,100); state.on = state.b>0; render(); }
-      if(e.key==='-'){ state.b = clamp(state.b-5,0,100); state.on = state.b>0; render(); }
-      if(e.key==='1'){ state.on=true; state.b=100; state.k=3000; render(); }
-      if(e.key==='2'){ state.on=true; state.b=75; state.k=4000; render(); }
-      if(e.key==='3'){ state.on=true; state.b=40; state.k=2700; render(); }
-    });
-
-    // Init
-    rangeB.value = state.b; rangeK.value = state.k; roomSel.value = state.room; autoOff.value = state.autoMin || 0; render(); tick();
+  <!-- SEO: Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "KenzWeb — Jasa Joki Website",
+    "description": "Jasa pembuatan dan perbaikan website. Landing page, e‑commerce, company profile, dan custom web app.",
+    "areaServed": "Indonesia",
+    "url": "https://example.com/",
+    "telephone": "+${WA_NUMBER}",
+    "sameAs": [
+      "https://wa.me/${WA_NUMBER}"
+    ],
+    "serviceType": ["Website Development", "Website Maintenance", "SEO"],
+    "brand": {"@type":"Brand","name":"KenzWeb"}
+  }
   </script>
 </body>
 </html>
