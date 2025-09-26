@@ -1,411 +1,196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KenzWeb — Jasa Joki Website | Cepat, Rapi, Terpercaya</title>
-  <meta name="description" content="KenzWeb — jasa joki website: pembuatan, perbaikan, optimasi SEO, dan maintenance. Responsif, cepat selesai, harga fleksibel. Klik untuk chat WhatsApp." />
-  <meta name="theme-color" content="#0ea5e9" />
-  <meta property="og:title" content="KenzWeb — Jasa Joki Website" />
-  <meta property="og:description" content="Butuh bantuan bikin/beresin website? KenzWeb siap bantu!" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dummyimage.com/1200x630/0ea5e9/ffffff&text=KenzWeb" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <title>Lampu Sidik Jari — Simulasi & WebAuthn</title>
   <style>
-    :root{
-      --bg:#0b1220; --panel:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --brand:#0ea5e9; --brand-2:#22d3ee; --ring:rgba(34,211,238,.35);
-      --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
-    }
+    :root{ --bg:#071026; --card:#0b1220; --accent:#ffd166; --muted:#9aa6b2 }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;scroll-behavior:smooth;background:linear-gradient(180deg,#0b1220 0%,#0b1220 20%,#0f172a 100%);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji";}
-    a{color:inherit;text-decoration:none}
-    .container{width:min(1200px,92%);margin-inline:auto}
-    .btn{display:inline-flex;gap:.5rem;align-items:center;border:1px solid transparent;padding:.85rem 1.05rem;border-radius:14px;font-weight:700;letter-spacing:.2px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#001018;box-shadow:0 10px 24px rgba(14,165,233,.25);transition:.2s}
-    .btn:hover{transform:translateY(-2px);filter:saturate(1.1)}
-    .btn.ghost{background:transparent;border-color:#1f2a44;color:var(--text)}
-    .btn.white{background:#fff;color:#0b1220}
-    .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;background:#0b233a;border:1px solid #153050;color:#a8d8ff;font-size:.85rem}
-    header{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(148,163,184,.1)}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-    .brand{display:flex;gap:.7rem;align-items:center}
-    .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 210deg at 50% 50%,var(--brand),#4f46e5,var(--brand-2));box-shadow:inset 0 0 20px rgba(255,255,255,.18),0 6px 16px rgba(14,165,233,.35)}
-    .brand h1{font-size:1.15rem;margin:0;font-weight:800;letter-spacing:.2px}
-    .navlinks{display:flex;gap:1rem;align-items:center}
-    .navlinks a{opacity:.9}
-    .navlinks a:hover{opacity:1}
-    .hero{position:relative;padding:72px 0 36px}
-    .grid{display:grid;gap:22px}
-    .hero h2{font-size:clamp(2rem,4vw,3rem);line-height:1.15;margin:10px 0 6px;font-weight:800}
-    .hero p{margin:0 0 18px;color:var(--muted);font-size:1.05rem}
-    .hero .panel{background:radial-gradient(1200px 300px at 50% -20%,rgba(34,211,238,.15),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:16px}
-    .hero .cta{display:flex;gap:10px;flex-wrap:wrap}
-    .twocol{grid-template-columns:1.1fr .9fr}
-    @media(max-width:900px){.twocol{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,#0c192e,rgba(12,25,46,.6));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px}
-    .card h3{margin:0 0 6px}
-    .list{display:grid;gap:10px;margin:10px 0 0;padding:0}
-    .list li{list-style:none;display:flex;gap:.6rem;align-items:flex-start}
-    .icon{width:20px;height:20px;display:inline-grid;place-items:center;border-radius:6px;background:#0a223d;border:1px solid #153050}
-    .section{padding:36px 0}
-    .section h2{font-size:1.6rem;margin:0 0 12px}
-    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media(max-width:900px){.pricing{grid-template-columns:1fr}}
-    .price{position:relative}
-    .price .badge{position:absolute;top:12px;right:12px}
-    .price .num{font-size:2rem;font-weight:800}
-    .tag{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(148,163,184,.2);font-size:.85rem;color:var(--muted)}
-    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    @media(max-width:900px){.gallery{grid-template-columns:1fr 1fr}}
-    .work{aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(148,163,184,.12);position:relative}
-    .work img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05)}
-    .work span{position:absolute;left:10px;bottom:10px;background:rgba(11,18,32,.75);backdrop-filter:blur(6px);border:1px solid rgba(148,163,184,.18);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-    .step{position:relative;padding:14px;border-radius:16px;border:1px solid rgba(148,163,184,.12);background:#0c192e}
-    .step .n{width:28px;height:28px;border-radius:9px;background:#0a223d;border:1px solid #153050;display:inline-grid;place-items:center;margin-bottom:6px}
-    .faq{display:grid;gap:10px}
-    details{border:1px solid rgba(148,163,184,.12);background:#0c192e;border-radius:14px;padding:12px}
-    details summary{cursor:pointer;font-weight:600}
-    footer{padding:30px 0;border-top:1px solid rgba(148,163,184,.12);color:var(--muted)}
-    .float-wa{position:fixed;right:18px;bottom:18px;z-index:60}
-    .float-wa a{display:inline-flex;align-items:center;gap:.5rem;background:#25d366;color:#032b12;padding:.8rem 1rem;border-radius:999px;font-weight:800;border:2px solid #1ab455;box-shadow:0 10px 20px rgba(37,211,102,.35)}
-    .kbd{padding:.1rem .4rem;border:1px solid #2b3c5e;background:#0b1e39;border-radius:6px;font-size:.85rem;color:#a8d8ff}
-    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);margin:18px 0}
-    .note{font-size:.9rem;color:var(--muted)}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; background:linear-gradient(180deg,#041022 0%, #07102a 100%); color:#e6eef6; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px}
+    .wrap{width:100%; max-width:980px; display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:center}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); padding:20px; border-radius:14px; box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+
+    /* Lamp */
+    .lamp-area{display:flex; flex-direction:column; gap:14px; align-items:center}
+    .lamp-svg{width:240px; height:240px}
+    .lamp-on .bulb-fill{filter:drop-shadow(0 20px 40px rgba(255,200,80,0.25));}
+    .status{font-weight:700; color:var(--muted)}
+
+    /* Scanner */
+    .scanner{display:flex; flex-direction:column; gap:12px; align-items:center}
+    .pad{width:260px; height:260px; border-radius:18px; background:linear-gradient(180deg,#06101b,#081827); display:flex; align-items:center; justify-content:center; border:2px dashed rgba(255,255,255,0.03); position:relative; overflow:hidden; touch-action:manipulation}
+    .finger{width:120px; height:160px; border-radius:60px 60px 40px 40px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; -webkit-tap-highlight-color: transparent}
+    .finger svg{opacity:0.95}
+
+    /* visual press*/
+    .imprint{position:absolute; width:40%; height:40%; border-radius:50%; background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); transform:scale(0); opacity:0; pointer-events:none}
+    .imprint.show{transform:scale(1); opacity:1; transition:transform 200ms ease, opacity 200ms ease}
+
+    .scan-wave{position:absolute; inset:0; pointer-events:none}
+    .wave{position:absolute; left:50%; transform:translateX(-50%); width:60%; height:2px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); opacity:0}
+    .wave.anim{animation:scan 1.2s ease-in-out}
+    @keyframes scan{0%{top:8% ; opacity:0} 18%{opacity:1} 50%{top:50%} 82%{opacity:1} 100%{top:92%; opacity:0}}
+
+    .controls{display:flex; gap:10px; margin-top:6px}
+    button{background:transparent; border:1px solid rgba(255,255,255,0.06); color:inherit; padding:10px 12px; border-radius:10px; cursor:pointer}
+    button.primary{background:linear-gradient(90deg,#ffd166,#ff9f1c); color:#081422; border:none; font-weight:700}
+    .note{font-size:13px; color:var(--muted); text-align:center}
+
+    /* responsive */
+    @media (max-width:960px){.wrap{grid-template-columns:1fr;}}
   </style>
-  <script>
-    // --- Konfigurasi nomor WhatsApp (ubah jika perlu) ---
-    const WA_NUMBER_LOCAL = "089523679756"; // nomor lokal diawali 0
-    const WA_NUMBER = WA_NUMBER_LOCAL.replace(/^0/,"62"); // diubah ke format internasional 62xxxxxxxxxxx
-    const WA_BASE = `https://wa.me/${WA_NUMBER}`;
-
-    // Buat URL WhatsApp dengan pesan
-    function waUrlWithMessage(msg){
-      return `${WA_BASE}?text=${encodeURIComponent(msg)}`;
-    }
-
-    // Isi semua tombol WA saat halaman siap
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('[data-wa]').forEach(el => {
-        const text = el.getAttribute('data-wa') || 'Halo KenzWeb! Saya tertarik dengan jasanya.';
-        el.setAttribute('href', waUrlWithMessage(text));
-      });
-
-      // Form ke WhatsApp
-      const form = document.getElementById('whatsapp-form');
-      if(form){
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const nama = form.nama.value.trim();
-          const tipe = form.tipe.value;
-          const budget = form.budget.value.trim();
-          const pesan = form.pesan.value.trim();
-          const msg = `Halo KenzWeb!\n\nNama: ${nama || '-'}\nKebutuhan: ${tipe}\nBudget: ${budget || '-'}\nPesan: ${pesan || '-'}\n\nMohon dibantu ya 🙏`;
-          window.open(waUrlWithMessage(msg), '_blank');
-        });
-      }
-
-      // Smooth scroll close mobile menu
-      document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', () => {
-          const cb = document.getElementById('nav-toggle');
-          if(cb) cb.checked = false;
-        });
-      });
-    });
-  </script>
 </head>
 <body>
-  <!-- Header / Nav -->
-  <header>
-    <div class="container">
-      <nav>
-        <div class="brand">
-          <div class></div>
-          <h1>KenzWeb</h1>
-          
-        </div>
-        <input id="nav-toggle" type="checkbox" hidden>
-        <label for="nav-toggle" class="btn ghost" style="display:none" id="nav-btn">Menu</label>
-        <div class="navlinks" id="nav">
-          <a href="#layanan">Layanan</a>
-          <a href="#harga">Harga</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#proses">Proses</a>
-          <a href="#faq">FAQ</a>
-          <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi project website.">Chat WhatsApp</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div class="wrap">
+    <section class="card lamp-area" id="lampCard">
+      <svg class="lamp-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="g1" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#fff7d9" stop-opacity="1"/>
+            <stop offset="60%" stop-color="#ffd166" stop-opacity="0.98"/>
+            <stop offset="100%" stop-color="#ff9f1c" stop-opacity="0.9"/>
+          </radialGradient>
+        </defs>
+        <g transform="translate(100,60)">
+          <ellipse cx="0" cy="70" rx="48" ry="14" fill="rgba(0,0,0,0.35)" />
+          <g id="bulbGroup">
+            <path class="bulb-fill" d="M-44,-22 C-44,34 -10,64 0,72 C10,64 44,34 44,-22 C44,-64 -44,-64 -44,-22 Z" fill="#222" />
+            <rect x="-24" y="72" width="48" height="18" rx="4" fill="#222" />
+            <rect x="-16" y="92" width="32" height="12" rx="3" fill="#111" />
+          </g>
+        </g>
+      </svg>
+      <div class="status" id="lampStatus">Status: <span id="lampState">Mati</span></div>
+      <div class="note">Sentuh area sidik jari di kanan dengan jari (tap / tekan) — <strong>simulasi</strong> + opsi WebAuthn.</div>
+    </section>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container grid twocol">
-      <div>
-        <span class="chip">🚀 KenzWeb · Jasa Joki Website</span>
-        <h2>Bikin & Beresin Website <br> Cepat, Rapi, <span style="background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent">Terpercaya</span></h2>
-        <p>Butuh landing page, toko online, atau custom web apps? KenzWeb siap bantu dari 0 sampai online. Gratis konsultasi & revisi minor.</p>
-        <div class="cta">
-          <a class="btn" data-wa="Halo KenzWeb! Saya mau order jasa project website.">Mulai via WhatsApp</a>
-          <a href="#harga" class="btn ghost">Lihat Paket Harga</a>
-        </div>
-        <div class="note" style="margin-top:10px">Respon cepat • Garansi online • Pembayaran fleksibel</div>
-      </div>
-      <div class="panel">
-        <div class="card">
-          <h3 style="margin:0">Form Cepat (otomatis kirim ke WhatsApp)</h3>
-          <form id="whatsapp-form" style="margin-top:10px;display:grid;gap:10px">
-            <label>Nama
-              <input required name="nama" placeholder="Nama kamu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text);outline-color:var(--ring)">
-            </label>
-            <label>Kebutuhan
-              <select name="tipe" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
-                <option>Landing Page</option>
-                <option>E‑Commerce (Toko Online)</option>
-                <option>Company Profile</option>
-                <option>Perbaikan / Maintenance</option>
-                <option>Custom Web App</option>
-                <option>Optimasi SEO</option>
-              </select>
-            </label>
-            <label>Budget (opsional)
-              <input name="budget" placeholder="Contoh: 2–5 juta" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
-            </label>
-            <label>Pesan (opsional)
-              <textarea name="pesan" rows="3" placeholder="Ceritakan singkat kebutuhanmu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)"></textarea>
-            </label>
-            <button class="btn white" type="submit">Kirim ke WhatsApp</button>
-            <div class="note">Tip: tekan <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> untuk submit cepat.</div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
+    <aside class="card scanner">
+      <h3 style="margin:0">Area Sidik Jari</h3>
+      <p style="margin:0; color:var(--muted); font-size:13px">Simulasi sentuhan + opsi WebAuthn (untuk device dengan sensor, via HTTPS).</p>
 
-  <!-- Layanan -->
-  <section class="section" id="layanan">
-    <div class="container">
-      <h2>Layanan KenzWeb</h2>
-      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="card">
-          <h3>Landing Page</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Desain modern & mobile‑friendly</span></li>
-            <li><span class="icon">✓</span><span>Konversi tinggi, CTA jelas</span></li>
-            <li><span class="icon">✓</span><span>Integrasi WhatsApp & Form</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>E‑Commerce</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Keranjang, checkout, ongkir</span></li>
-            <li><span class="icon">✓</span><span>Payment gateway lokal</span></li>
-            <li><span class="icon">✓</span><span>Nota & stok sederhana</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Maintenance</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Perbaikan bug & backup</span></li>
-            <li><span class="icon">✓</span><span>Optimasi performa & keamanan</span></li>
-            <li><span class="icon">✓</span><span>Monitoring uptime</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Company Profile</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Halaman lengkap & profesional</span></li>
-            <li><span class="icon">✓</span><span>SEO dasar & Google Index</span></li>
-            <li><span class="icon">✓</span><span>Gratis 1 bulan support</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Custom Web App</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Dashboard, auth, CRUD</span></li>
-            <li><span class="icon">✓</span><span>Integrasi API & Webhook</span></li>
-            <li><span class="icon">✓</span><span>Dokumentasi singkat</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Optimasi SEO</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Audit teknis & on‑page</span></li>
-            <li><span class="icon">✓</span><span>Konten & struktur keyword</span></li>
-            <li><span class="icon">✓</span><span>Kecepatan & Core Web Vitals</span></li>
-          </ul>
+      <div class="pad" id="pad" aria-label="Area sidik jari" role="button" tabindex="0">
+        <div class="scan-wave" id="scanWave"><div class="wave" id="wave1"></div></div>
+        <div class="imprint" id="imprint"></div>
+        <div class="finger" id="finger" title="Sentuh untuk scan" role="button" tabindex="0">
+          <svg width="64" height="96" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 6v5a5 5 0 0010 0V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 16v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Harga -->
-  <section class="section" id="harga">
-    <div class="container">
-      <h2>Paket Harga</h2>
-      <div class="pricing">
-        <div class="card price">
-          <span class="badge chip">Hemat</span>
-          <h3>Starter</h3>
-          <div class="num">Rp799K</div>
-          <div class="tag">Landing Page • 1‑3 Bagian</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Desain responsif</span></li>
-            <li><span class="icon">✓</span><span>Integrasi WhatsApp</span></li>
-            <li><span class="icon">✓</span><span>Gratis domain .my.id (1 thn)</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Starter Rp799K.">Pilih Paket</a>
-        </div>
-        <div class="card price" style="outline:2px solid var(--brand);outline-offset:3px">
-          <span class="badge chip">Terlaris</span>
-          <h3>Pro</h3>
-          <div class="num">Rp1,9Jt</div>
-          <div class="tag">Company Profile • 4‑8 Halaman</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Copywriting dasar</span></li>
-            <li><span class="icon">✓</span><span>Form kontak + email</span></li>
-            <li><span class="icon">✓</span><span>SEO dasar & Analytics</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Pro Rp1,9Jt.">Pilih Paket</a>
-        </div>
-        <div class="card price">
-          <span class="badge chip">Kustom</span>
-          <h3>Biz/E‑Com</h3>
-          <div class="num">Mulai Rp3,5Jt</div>
-          <div class="tag">Toko Online / Web App</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Keranjang & checkout</span></li>
-            <li><span class="icon">✓</span><span>Gateway pembayaran</span></li>
-            <li><span class="icon">✓</span><span>Admin panel sederhana</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Biz/E‑Com. Mohon konsultasi.">Konsultasi Dulu</a>
-        </div>
+      <div class="controls">
+        <button id="tryWebauth">Coba WebAuthn</button>
+        <button class="primary" id="resetBtn">Reset</button>
       </div>
-      <div class="note" style="margin-top:10px">Harga dapat berubah sesuai kompleksitas. Tanyakan promo terbaru ya! 🎁</div>
-    </div>
-  </section>
-
-  <!-- Portfolio -->
-  <section class="section" id="portfolio">
-    <div class="container">
-      <h2>Contoh Pekerjaan</h2>
-      <div class="gallery">
-        <figure class="work"><img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=1200&auto=format&fit=crop" alt="Dashboard web"/><span>Dashboard Bisnis</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Landing page"/><span>Landing Page Produk</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="E‑commerce"/><span>Toko Online</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1200&auto=format&fit=crop" alt="Company profile"/><span>Company Profile</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop" alt="Blog SEO"/><span>Blog SEO</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="Web app"/><span>Web App Kustom</span></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- Proses -->
-  <section class="section" id="proses">
-    <div class="container">
-      <h2>Alur Pengerjaan</h2>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><strong>Diskusi</strong><div class="note">Bahas tujuan, referensi, dan deadline.</div></div>
-        <div class="step"><div class="n">2</div><strong>Desain</strong><div class="note">Susun struktur & wireframe, minta persetujuan.</div></div>
-        <div class="step"><div class="n">3</div><strong>Develop</strong><div class="note">Implementasi fitur & konten, cek performa.</div></div>
-        <div class="step"><div class="n">4</div><strong>Live!</strong><div class="note">Deploy, serah terima, dan support pasca‑rilis.</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimoni / FAQ -->
-  <section class="section" id="faq">
-    <div class="container">
-      <h2>FAQ & Testimoni</h2>
-      <div class="grid" style="grid-template-columns:1.1fr .9fr">
-        <div class="faq">
-          <details open>
-            <summary>Berapa lama pengerjaan?</summary>
-            <div class="note">Landing page umumnya 3‑7 hari kerja, project besar menyesuaikan scope.</div>
-          </details>
-          <details>
-            <summary>Apakah bisa revisi?</summary>
-            <div class="note">Bisa. Termasuk revisi minor (3x) pada fase design & finishing.</div>
-          </details>
-          <details>
-            <summary>Pembayaran bagaimana?</summary>
-            <div class="note">DP 30‑50% di awal, sisanya setelah website siap live.</div>
-          </details>
-          <details>
-            <summary>Apakah bisa maintenance bulanan?</summary>
-            <div class="note">Bisa, tersedia paket maintenance dengan SLA sederhana.</div>
-          </details>
-        </div>
-        <div class="card">
-          <h3>Klien kami berkata…</h3>
-          <ul class="list">
-            <li><span class="icon">★</span><span>“Cepat dan komunikatif. Landing page langsung menghasilkan lead.” — Raka</span></li>
-            <li><span class="icon">★</span><span>“Bug lama beres dalam sehari. Mantap!” — Sinta</span></li>
-            <li><span class="icon">★</span><span>“Toko online rapi, performa ngebut.” — Daniel</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA akhir -->
-  <section class="section">
-    <div class="container card" style="display:grid;gap:10px;align-items:center;grid-template-columns:1.2fr .8fr">
-      <div>
-        <h2 style="margin:0">Siap mulai bersama <strong>KenzWeb</strong>?</h2>
-        <p class="note">Klik tombol di sebelah untuk konsultasi gratis via WhatsApp.</p>
-      </div>
-      <div style="justify-self:end">
-        <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi & cek ketersediaan jadwal.">Konsultasi Gratis</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
-      <div>© <span id="year"></span> KenzWeb. Semua hak dilindungi.</div>
-      <div style="display:flex;gap:12px">
-        <a href="#layanan">Layanan</a>
-        <a href="#harga">Harga</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#faq">FAQ</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Floating WhatsApp Button -->
-  <div class="float-wa">
-    <a class="btn" style="background:#25d366;border-radius:999px;border-color:#1ab455;color:#032b12" data-wa="Halo KenzWeb! Saya ingin tanya soal jasa joki website.">💬 WhatsApp</a>
+      <p class="note" id="log">Log: siap.</p>
+      <small class="note">Catatan: WebAuthn butuh server HTTPS + backend challenge untuk benar-benar berfungsi. Jika gagal, akan fallback ke simulasi.</small>
+    </aside>
   </div>
 
   <script>
-    // Update tahun otomatis
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+    // Elemen
+    const lampCard = document.getElementById('lampCard');
+    const lampStateEl = document.getElementById('lampState');
+    const bulb = document.querySelector('.bulb-fill');
+    const pad = document.getElementById('pad');
+    const wave1 = document.getElementById('wave1');
+    const imprint = document.getElementById('imprint');
+    const log = document.getElementById('log');
+    const tryWebauthBtn = document.getElementById('tryWebauth');
+    const resetBtn = document.getElementById('resetBtn');
 
-  <!-- SEO: Schema.org JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "KenzWeb — Jasa Joki Website",
-    "description": "Jasa pembuatan dan perbaikan website. Landing page, e‑commerce, company profile, dan custom web app.",
-    "areaServed": "Indonesia",
-    "url": "https://example.com/",
-    "telephone": "+${WA_NUMBER}",
-    "sameAs": [
-      "https://wa.me/${WA_NUMBER}"
-    ],
-    "serviceType": ["Website Development", "Website Maintenance", "SEO"],
-    "brand": {"@type":"Brand","name":"KenzWeb"}
-  }
+    let isLampOn = false;
+
+    function setLamp(on){
+      isLampOn = !!on;
+      if(isLampOn){
+        lampCard.classList.add('lamp-on');
+        bulb.setAttribute('fill','url(#g1)');
+        lampStateEl.textContent = 'Menyala';
+        log.textContent = 'Log: Lampu menyala.';
+      } else {
+        lampCard.classList.remove('lamp-on');
+        bulb.setAttribute('fill','#222');
+        lampStateEl.textContent = 'Mati';
+        log.textContent = 'Log: Lampu mati.';
+      }
+    }
+
+    function animateScan(){
+      wave1.classList.remove('anim');
+      void wave1.offsetWidth;
+      wave1.classList.add('anim');
+    }
+
+    function showImprint(xPct=50, yPct=55){
+      imprint.style.left = xPct + '%';
+      imprint.style.top = yPct + '%';
+      imprint.classList.add('show');
+      setTimeout(()=> imprint.classList.remove('show'), 700);
+    }
+
+    function vibrate(pattern=40){
+      try{ if(navigator.vibrate) navigator.vibrate(pattern); } catch(e){}
+    }
+
+    async function simulatedFingerprintAuth(xPct=50,yPct=55){
+      log.textContent = 'Log: Memulai pemindaian (simulasi)...';
+      showImprint(xPct, yPct);
+      animateScan();
+      vibrate([30]);
+      await new Promise(r => setTimeout(r, 900));
+      log.textContent = 'Log: Sidik jari terverifikasi (simulasi).';
+      setLamp(!isLampOn);
+    }
+
+    // Pointer events (tap/click)
+    pad.addEventListener('pointerdown', e =>{
+      const rect = pad.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      const xPct = Math.round((clientX - rect.left) / rect.width * 100);
+      const yPct = Math.round((clientY - rect.top) / rect.height * 100);
+      simulatedFingerprintAuth(xPct, yPct);
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', ()=>{ setLamp(false); log.textContent='Log: Di-reset.'; vibrate([50]); });
+
+    // WebAuthn attempt
+    tryWebauthBtn.addEventListener('click', async ()=>{
+      if(!window.PublicKeyCredential){
+        log.textContent = 'Log: WebAuthn tidak didukung di browser ini, fallback simulasi.';
+        simulatedFingerprintAuth();
+        return;
+      }
+      try{
+        log.textContent = 'Log: Mencoba WebAuthn...';
+        const publicKey = {
+          challenge: Uint8Array.from('demo-challenge-123456', c => c.charCodeAt(0)),
+          timeout: 60000,
+          userVerification: 'preferred'
+        };
+        const cred = await navigator.credentials.get({ publicKey });
+        if(cred){
+          log.textContent = 'Log: WebAuthn berhasil — lampu menyala.';
+          setLamp(true);
+        } else {
+          log.textContent = 'Log: WebAuthn tidak berhasil, fallback simulasi.';
+          simulatedFingerprintAuth();
+        }
+      } catch(err){
+        console.warn('WebAuthn error', err);
+        log.textContent = 'Log: WebAuthn gagal, fallback simulasi.';
+        simulatedFingerprintAuth();
+      }
+    });
+
+    // Init
+    setLamp(false);
   </script>
 </body>
 </html>
