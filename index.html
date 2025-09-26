@@ -1,411 +1,817 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KenzWeb — Jasa Joki Website | Cepat, Rapi, Terpercaya</title>
-  <meta name="description" content="KenzWeb — jasa joki website: pembuatan, perbaikan, optimasi SEO, dan maintenance. Responsif, cepat selesai, harga fleksibel. Klik untuk chat WhatsApp." />
-  <meta name="theme-color" content="#0ea5e9" />
-  <meta property="og:title" content="KenzWeb — Jasa Joki Website" />
-  <meta property="og:description" content="Butuh bantuan bikin/beresin website? KenzWeb siap bantu!" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dummyimage.com/1200x630/0ea5e9/ffffff&text=KenzWeb" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0b1220; --panel:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --brand:#0ea5e9; --brand-2:#22d3ee; --ring:rgba(34,211,238,.35);
-      --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;scroll-behavior:smooth;background:linear-gradient(180deg,#0b1220 0%,#0b1220 20%,#0f172a 100%);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji";}
-    a{color:inherit;text-decoration:none}
-    .container{width:min(1200px,92%);margin-inline:auto}
-    .btn{display:inline-flex;gap:.5rem;align-items:center;border:1px solid transparent;padding:.85rem 1.05rem;border-radius:14px;font-weight:700;letter-spacing:.2px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#001018;box-shadow:0 10px 24px rgba(14,165,233,.25);transition:.2s}
-    .btn:hover{transform:translateY(-2px);filter:saturate(1.1)}
-    .btn.ghost{background:transparent;border-color:#1f2a44;color:var(--text)}
-    .btn.white{background:#fff;color:#0b1220}
-    .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;background:#0b233a;border:1px solid #153050;color:#a8d8ff;font-size:.85rem}
-    header{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(148,163,184,.1)}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-    .brand{display:flex;gap:.7rem;align-items:center}
-    .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 210deg at 50% 50%,var(--brand),#4f46e5,var(--brand-2));box-shadow:inset 0 0 20px rgba(255,255,255,.18),0 6px 16px rgba(14,165,233,.35)}
-    .brand h1{font-size:1.15rem;margin:0;font-weight:800;letter-spacing:.2px}
-    .navlinks{display:flex;gap:1rem;align-items:center}
-    .navlinks a{opacity:.9}
-    .navlinks a:hover{opacity:1}
-    .hero{position:relative;padding:72px 0 36px}
-    .grid{display:grid;gap:22px}
-    .hero h2{font-size:clamp(2rem,4vw,3rem);line-height:1.15;margin:10px 0 6px;font-weight:800}
-    .hero p{margin:0 0 18px;color:var(--muted);font-size:1.05rem}
-    .hero .panel{background:radial-gradient(1200px 300px at 50% -20%,rgba(34,211,238,.15),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:16px}
-    .hero .cta{display:flex;gap:10px;flex-wrap:wrap}
-    .twocol{grid-template-columns:1.1fr .9fr}
-    @media(max-width:900px){.twocol{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,#0c192e,rgba(12,25,46,.6));border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px}
-    .card h3{margin:0 0 6px}
-    .list{display:grid;gap:10px;margin:10px 0 0;padding:0}
-    .list li{list-style:none;display:flex;gap:.6rem;align-items:flex-start}
-    .icon{width:20px;height:20px;display:inline-grid;place-items:center;border-radius:6px;background:#0a223d;border:1px solid #153050}
-    .section{padding:36px 0}
-    .section h2{font-size:1.6rem;margin:0 0 12px}
-    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media(max-width:900px){.pricing{grid-template-columns:1fr}}
-    .price{position:relative}
-    .price .badge{position:absolute;top:12px;right:12px}
-    .price .num{font-size:2rem;font-weight:800}
-    .tag{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(148,163,184,.2);font-size:.85rem;color:var(--muted)}
-    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    @media(max-width:900px){.gallery{grid-template-columns:1fr 1fr}}
-    .work{aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(148,163,184,.12);position:relative}
-    .work img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05)}
-    .work span{position:absolute;left:10px;bottom:10px;background:rgba(11,18,32,.75);backdrop-filter:blur(6px);border:1px solid rgba(148,163,184,.18);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-    .step{position:relative;padding:14px;border-radius:16px;border:1px solid rgba(148,163,184,.12);background:#0c192e}
-    .step .n{width:28px;height:28px;border-radius:9px;background:#0a223d;border:1px solid #153050;display:inline-grid;place-items:center;margin-bottom:6px}
-    .faq{display:grid;gap:10px}
-    details{border:1px solid rgba(148,163,184,.12);background:#0c192e;border-radius:14px;padding:12px}
-    details summary{cursor:pointer;font-weight:600}
-    footer{padding:30px 0;border-top:1px solid rgba(148,163,184,.12);color:var(--muted)}
-    .float-wa{position:fixed;right:18px;bottom:18px;z-index:60}
-    .float-wa a{display:inline-flex;align-items:center;gap:.5rem;background:#25d366;color:#032b12;padding:.8rem 1rem;border-radius:999px;font-weight:800;border:2px solid #1ab455;box-shadow:0 10px 20px rgba(37,211,102,.35)}
-    .kbd{padding:.1rem .4rem;border:1px solid #2b3c5e;background:#0b1e39;border-radius:6px;font-size:.85rem;color:#a8d8ff}
-    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);margin:18px 0}
-    .note{font-size:.9rem;color:var(--muted)}
-  </style>
-  <script>
-    // --- Konfigurasi nomor WhatsApp (ubah jika perlu) ---
-    const WA_NUMBER_LOCAL = "089523679756"; // nomor lokal diawali 0
-    const WA_NUMBER = WA_NUMBER_LOCAL.replace(/^0/,"62"); // diubah ke format internasional 62xxxxxxxxxxx
-    const WA_BASE = `https://wa.me/${WA_NUMBER}`;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KenzDompet — Dompet Digital</title>
+<style>
+  /* ====== RESET / BASE ====== */
+  :root{
+    --bg:#FAFCFF;
+    --card:#FFFFFF;
+    --muted:#6B7280;
+    --accent:#2563EB; /* biru cerah */
+    --accent-2:#06B6D4; /* toska */
+    --success:#16A34A;
+    --danger:#DC2626;
+    --glass: rgba(255,255,255,0.6);
+    --radius:14px;
+    --shadow: 0 6px 18px rgba(18,38,63,0.08);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #0f172a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background: linear-gradient(180deg,#F8FBFF 0%, #EFF6FF 100%);
+    padding:24px;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
 
-    // Buat URL WhatsApp dengan pesan
-    function waUrlWithMessage(msg){
-      return `${WA_BASE}?text=${encodeURIComponent(msg)}`;
-    }
+  /* ====== LAYOUT ====== */
+  .app{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 320px 1fr;
+    gap:20px;
+    align-items:start;
+  }
 
-    // Isi semua tombol WA saat halaman siap
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('[data-wa]').forEach(el => {
-        const text = el.getAttribute('data-wa') || 'Halo KenzWeb! Saya tertarik dengan jasanya.';
-        el.setAttribute('href', waUrlWithMessage(text));
-      });
+  /* ====== SIDEBAR ====== */
+  .sidebar{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    position:sticky;
+    top:24px;
+    height:calc(100vh - 48px);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
 
-      // Form ke WhatsApp
-      const form = document.getElementById('whatsapp-form');
-      if(form){
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const nama = form.nama.value.trim();
-          const tipe = form.tipe.value;
-          const budget = form.budget.value.trim();
-          const pesan = form.pesan.value.trim();
-          const msg = `Halo KenzWeb!\n\nNama: ${nama || '-'}\nKebutuhan: ${tipe}\nBudget: ${budget || '-'}\nPesan: ${pesan || '-'}\n\nMohon dibantu ya 🙏`;
-          window.open(waUrlWithMessage(msg), '_blank');
-        });
-      }
+  .logo{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  /* SVG logo wrapper (bigger logo as user requested) */
+  .logo .mark{
+    width:72px;
+    height:72px;
+    flex-shrink:0;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:white;
+    box-shadow: 0 6px 14px rgba(37,99,235,0.18), inset 0 -6px 18px rgba(255,255,255,0.06);
+    font-weight:700;
+    font-size:22px;
+  }
+  .logo h1{
+    font-size:20px;
+    line-height:1;
+    letter-spacing:0.2px;
+  }
+  .logo p{font-size:12px;color:var(--muted)}
 
-      // Smooth scroll close mobile menu
-      document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', () => {
-          const cb = document.getElementById('nav-toggle');
-          if(cb) cb.checked = false;
-        });
-      });
-    });
-  </script>
+  nav{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .nav-btn{
+    display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;
+    color:var(--muted);cursor:pointer;text-decoration:none;font-weight:600;
+  }
+  .nav-btn:hover{background:linear-gradient(90deg,rgba(37,99,235,0.06),rgba(6,182,212,0.03));color:var(--accent)}
+  .nav-btn.active{background:linear-gradient(90deg, rgba(37,99,235,0.12), rgba(6,182,212,0.06)); color:var(--accent);}
+
+  .spacer{flex:1}
+  .small-muted{font-size:12px;color:var(--muted)}
+
+  /* ====== MAIN ====== */
+  .main{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .top-bar{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+  }
+  .search{
+    display:flex;align-items:center;gap:10px;background:var(--card);padding:10px;border-radius:12px;box-shadow:var(--shadow);
+    min-width:260px;
+  }
+  .search input{border:0;outline:0;background:transparent;font-size:14px}
+
+  /* BALANCE CARD */
+  .balance-card{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    padding:18px;
+    border-radius:14px;
+    background: linear-gradient(90deg, rgba(6,182,212,0.06), rgba(37,99,235,0.04));
+    box-shadow:var(--shadow);
+  }
+  .balance-left{flex:1}
+  .bal-amount{font-size:28px;font-weight:700}
+  .bal-muted{color:var(--muted);font-size:13px;margin-top:6px}
+  .actions{display:flex;gap:10px}
+  .btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+  .btn.primary{background:var(--accent);color:white;box-shadow:0 8px 20px rgba(37,99,235,0.18)}
+  .btn.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--accent)}
+  .btn.warn{background:var(--success);color:white}
+
+  /* GRID below: left column widgets, right column content */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+  .col-4{grid-column: span 4;}
+  .col-8{grid-column: span 8;}
+
+  .quick-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .quick-action{
+    min-width:120px;flex:1;display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);cursor:pointer;border:1px solid rgba(15,23,42,0.03)
+  }
+
+  /* transaction list */
+  .tx-list{display:flex;flex-direction:column;gap:10px}
+  .tx-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.03)}
+  .tx-left{display:flex;gap:12px;align-items:center}
+  .tx-type{width:44px;height:44px;display:grid;place-items:center;border-radius:10px}
+  .credit{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);color:var(--success);font-weight:700}
+  .debit{background:linear-gradient(135deg,#FEF2F2,#FEE2E2);color:var(--danger);font-weight:700}
+  .tx-meta{font-size:13px}
+  .tx-amount{font-weight:700}
+
+  /* forms and modal */
+  .modal{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:60;
+  }
+  .modal.open{display:flex}
+  .dialog{background:var(--card);padding:18px;border-radius:12px;width:420px;box-shadow:0 20px 60px rgba(2,6,23,0.4)}
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  label{font-size:13px;color:var(--muted)}
+  input[type="text"], input[type="number"], input[type="password"]{
+    padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);outline:0;font-size:14px
+  }
+
+  .small{font-size:12px;color:var(--muted)}
+
+  /* responsive */
+  @media (max-width:980px){
+    .app{grid-template-columns: 1fr; padding:12px}
+    .sidebar{position:relative;height:auto;order:2}
+    .main{order:1}
+    .grid{grid-template-columns:repeat(6,1fr)}
+    .col-4{grid-column:span 6}
+    .col-8{grid-column:span 6}
+    .logo .mark{width:56px;height:56px;font-size:20px}
+  }
+
+  footer{display:flex;justify-content:space-between;align-items:center;padding:10px 6px;color:var(--muted);font-size:13px}
+</style>
 </head>
 <body>
-  <!-- Header / Nav -->
-  <header>
-    <div class="container">
-      <nav>
-        <div class="brand">
-          <div class></div>
-          <h1>KenzWeb</h1>
-          
+  <div class="app" role="application" aria-label="KenzDompet aplikasi">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Navigasi">
+      <div class="logo" title="KenzDompet">
+        <!-- Big colourful logo mark -->
+        <div class="mark" aria-hidden="true">
+          <!-- Simple K monogram -->
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3v18h4l6-7 4.5 7h3.5V3h-4.5L13 9 7 3H3z" fill="white" opacity="0.98"/>
+          </svg>
         </div>
-        <input id="nav-toggle" type="checkbox" hidden>
-        <label for="nav-toggle" class="btn ghost" style="display:none" id="nav-btn">Menu</label>
-        <div class="navlinks" id="nav">
-          <a href="#layanan">Layanan</a>
-          <a href="#harga">Harga</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#proses">Proses</a>
-          <a href="#faq">FAQ</a>
-          <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi project website.">Chat WhatsApp</a>
+        <div>
+          <h1>KenzDompet</h1>
+          <p></p>
         </div>
+      </div>
+
+      <nav aria-label="Menu utama">
+        <a class="nav-btn active" data-view="dashboard"><span>🏠</span> Dashboard</a>
+        <a class="nav-btn" data-view="kirim"><span>✈️</span> Kirim Uang</a>
+        <a class="nav-btn" data-view="terima"><span>📥</span> Terima / Top-up</a>
+        <a class="nav-btn" data-view="tarik"><span>💸</span> Tarik Tunai</a>
+        <a class="nav-btn" data-view="riwayat"><span>📜</span> Riwayat</a>
+        <a class="nav-btn" data-view="profile"><span>⚙️</span> Profil & Keamanan</a>
       </nav>
-    </div>
-  </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container grid twocol">
+      <div class="spacer"></div>
+
       <div>
-        <span class="chip">🚀 KenzWeb · Jasa Joki Website</span>
-        <h2>Bikin & Beresin Website <br> Cepat, Rapi, <span style="background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent">Terpercaya</span></h2>
-        <p>Butuh landing page, toko online, atau custom web apps? KenzWeb siap bantu dari 0 sampai online. Gratis konsultasi & revisi minor.</p>
-        <div class="cta">
-          <a class="btn" data-wa="Halo KenzWeb! Saya mau order jasa project website.">Mulai via WhatsApp</a>
-          <a href="#harga" class="btn ghost">Lihat Paket Harga</a>
-        </div>
-        <div class="note" style="margin-top:10px">Respon cepat • Garansi online • Pembayaran fleksibel</div>
+        <div class="small-muted">Saldo</div>
+        <div style="font-weight:800;font-size:18px;margin-top:6px" id="side-balance">Rp 0</div>
       </div>
-      <div class="panel">
-        <div class="card">
-          <h3 style="margin:0">Form Cepat (otomatis kirim ke WhatsApp)</h3>
-          <form id="whatsapp-form" style="margin-top:10px;display:grid;gap:10px">
-            <label>Nama
-              <input required name="nama" placeholder="Nama kamu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text);outline-color:var(--ring)">
-            </label>
-            <label>Kebutuhan
-              <select name="tipe" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
-                <option>Landing Page</option>
-                <option>E‑Commerce (Toko Online)</option>
-                <option>Company Profile</option>
-                <option>Perbaikan / Maintenance</option>
-                <option>Custom Web App</option>
-                <option>Optimasi SEO</option>
-              </select>
-            </label>
-            <label>Budget (opsional)
-              <input name="budget" placeholder="Contoh: 2–5 juta" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)">
-            </label>
-            <label>Pesan (opsional)
-              <textarea name="pesan" rows="3" placeholder="Ceritakan singkat kebutuhanmu" style="width:100%;margin-top:6px;padding:.8rem;border-radius:10px;border:1px solid #213455;background:#0a1a30;color:var(--text)"></textarea>
-            </label>
-            <button class="btn white" type="submit">Kirim ke WhatsApp</button>
-            <div class="note">Tip: tekan <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> untuk submit cepat.</div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Layanan -->
-  <section class="section" id="layanan">
-    <div class="container">
-      <h2>Layanan KenzWeb</h2>
-      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="card">
-          <h3>Landing Page</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Desain modern & mobile‑friendly</span></li>
-            <li><span class="icon">✓</span><span>Konversi tinggi, CTA jelas</span></li>
-            <li><span class="icon">✓</span><span>Integrasi WhatsApp & Form</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>E‑Commerce</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Keranjang, checkout, ongkir</span></li>
-            <li><span class="icon">✓</span><span>Payment gateway lokal</span></li>
-            <li><span class="icon">✓</span><span>Nota & stok sederhana</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Maintenance</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Perbaikan bug & backup</span></li>
-            <li><span class="icon">✓</span><span>Optimasi performa & keamanan</span></li>
-            <li><span class="icon">✓</span><span>Monitoring uptime</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Company Profile</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Halaman lengkap & profesional</span></li>
-            <li><span class="icon">✓</span><span>SEO dasar & Google Index</span></li>
-            <li><span class="icon">✓</span><span>Gratis 1 bulan support</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Custom Web App</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Dashboard, auth, CRUD</span></li>
-            <li><span class="icon">✓</span><span>Integrasi API & Webhook</span></li>
-            <li><span class="icon">✓</span><span>Dokumentasi singkat</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Optimasi SEO</h3>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Audit teknis & on‑page</span></li>
-            <li><span class="icon">✓</span><span>Konten & struktur keyword</span></li>
-            <li><span class="icon">✓</span><span>Kecepatan & Core Web Vitals</span></li>
-          </ul>
-        </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn primary" id="btn-topup-sidebar">Top-up</button>
+        <button class="btn ghost" id="btn-send-sidebar">Kirim</button>
       </div>
-    </div>
-  </section>
 
-  <!-- Harga -->
-  <section class="section" id="harga">
-    <div class="container">
-      <h2>Paket Harga</h2>
-      <div class="pricing">
-        <div class="card price">
-          <span class="badge chip">Hemat</span>
-          <h3>Starter</h3>
-          <div class="num">Rp799K</div>
-          <div class="tag">Landing Page • 1‑3 Bagian</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Desain responsif</span></li>
-            <li><span class="icon">✓</span><span>Integrasi WhatsApp</span></li>
-            <li><span class="icon">✓</span><span>Gratis domain .my.id (1 thn)</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Starter Rp799K.">Pilih Paket</a>
+      <footer>
+        <div>v1.0</div>
+        <div>&copy; KenzDompet</div>
+      </footer>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" id="main">
+      <div class="top-bar">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="search" role="search" aria-label="Cari transaksi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#94A3B8" stroke-width="1.6"/></svg>
+            <input id="tx-search" placeholder="Cari nama, nominal, catatan..." />
+          </div>
+          <div class="small-muted" id="user-welcome">Selamat datang!</div>
         </div>
-        <div class="card price" style="outline:2px solid var(--brand);outline-offset:3px">
-          <span class="badge chip">Terlaris</span>
-          <h3>Pro</h3>
-          <div class="num">Rp1,9Jt</div>
-          <div class="tag">Company Profile • 4‑8 Halaman</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Copywriting dasar</span></li>
-            <li><span class="icon">✓</span><span>Form kontak + email</span></li>
-            <li><span class="icon">✓</span><span>SEO dasar & Analytics</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Pro Rp1,9Jt.">Pilih Paket</a>
-        </div>
-        <div class="card price">
-          <span class="badge chip">Kustom</span>
-          <h3>Biz/E‑Com</h3>
-          <div class="num">Mulai Rp3,5Jt</div>
-          <div class="tag">Toko Online / Web App</div>
-          <ul class="list">
-            <li><span class="icon">✓</span><span>Keranjang & checkout</span></li>
-            <li><span class="icon">✓</span><span>Gateway pembayaran</span></li>
-            <li><span class="icon">✓</span><span>Admin panel sederhana</span></li>
-          </ul>
-          <div class="divider"></div>
-          <a class="btn" data-wa="Halo, saya minat paket Biz/E‑Com. Mohon konsultasi.">Konsultasi Dulu</a>
+
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn ghost" id="btn-notif">🔔 Notifikasi</button>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div style="text-align:right">
+              <div style="font-weight:700">Deo Bagus Prayoga</div>
+              <div class="small-muted">ID: KD-0001</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="note" style="margin-top:10px">Harga dapat berubah sesuai kompleksitas. Tanyakan promo terbaru ya! 🎁</div>
-    </div>
-  </section>
 
-  <!-- Portfolio -->
-  <section class="section" id="portfolio">
-    <div class="container">
-      <h2>Contoh Pekerjaan</h2>
-      <div class="gallery">
-        <figure class="work"><img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=1200&auto=format&fit=crop" alt="Dashboard web"/><span>Dashboard Bisnis</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Landing page"/><span>Landing Page Produk</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="E‑commerce"/><span>Toko Online</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1200&auto=format&fit=crop" alt="Company profile"/><span>Company Profile</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop" alt="Blog SEO"/><span>Blog SEO</span></figure>
-        <figure class="work"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="Web app"/><span>Web App Kustom</span></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- Proses -->
-  <section class="section" id="proses">
-    <div class="container">
-      <h2>Alur Pengerjaan</h2>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><strong>Diskusi</strong><div class="note">Bahas tujuan, referensi, dan deadline.</div></div>
-        <div class="step"><div class="n">2</div><strong>Desain</strong><div class="note">Susun struktur & wireframe, minta persetujuan.</div></div>
-        <div class="step"><div class="n">3</div><strong>Develop</strong><div class="note">Implementasi fitur & konten, cek performa.</div></div>
-        <div class="step"><div class="n">4</div><strong>Live!</strong><div class="note">Deploy, serah terima, dan support pasca‑rilis.</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimoni / FAQ -->
-  <section class="section" id="faq">
-    <div class="container">
-      <h2>FAQ & Testimoni</h2>
-      <div class="grid" style="grid-template-columns:1.1fr .9fr">
-        <div class="faq">
-          <details open>
-            <summary>Berapa lama pengerjaan?</summary>
-            <div class="note">Landing page umumnya 3‑7 hari kerja, project besar menyesuaikan scope.</div>
-          </details>
-          <details>
-            <summary>Apakah bisa revisi?</summary>
-            <div class="note">Bisa. Termasuk revisi minor (3x) pada fase design & finishing.</div>
-          </details>
-          <details>
-            <summary>Pembayaran bagaimana?</summary>
-            <div class="note">DP 30‑50% di awal, sisanya setelah website siap live.</div>
-          </details>
-          <details>
-            <summary>Apakah bisa maintenance bulanan?</summary>
-            <div class="note">Bisa, tersedia paket maintenance dengan SLA sederhana.</div>
-          </details>
+      <!-- BALANCE -->
+      <section class="balance-card card" role="region" aria-label="Saldo utama">
+        <div class="balance-left">
+          <div class="small-muted">Saldo Utama</div>
+          <div class="bal-amount" id="main-balance">Rp 0</div>
+          <div class="bal-muted">Tersedia untuk transaksi dan tarik tunai</div>
         </div>
-        <div class="card">
-          <h3>Klien kami berkata…</h3>
-          <ul class="list">
-            <li><span class="icon">★</span><span>“Cepat dan komunikatif. Landing page langsung menghasilkan lead.” — Raka</span></li>
-            <li><span class="icon">★</span><span>“Bug lama beres dalam sehari. Mantap!” — Sinta</span></li>
-            <li><span class="icon">★</span><span>“Toko online rapi, performa ngebut.” — Daniel</span></li>
-          </ul>
+        <div class="actions">
+          <button class="btn primary" id="topup-btn">Top-up</button>
+          <button class="btn ghost" id="send-btn">Kirim</button>
+          <button class="btn" id="qr-btn" style="background:linear-gradient(90deg,#fff,#F8FBFF)">QR</button>
+        </div>
+      </section>
+
+      <!-- GRID -->
+      <section class="grid">
+        <!-- QUICK ACTIONS -->
+        <div class="col-4 card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin-bottom:10px">Aksi Cepat</h3>
+            <div class="small-muted">klik untuk coba</div>
+          </div>
+
+          <div class="quick-actions">
+            <div class="quick-action" id="qa-topup">
+              <div style="font-size:20px">📥</div>
+              <div>
+                <div style="font-weight:700">Top-up</div>
+                <div class="small-muted">Isi saldo cepat</div>
+              </div>
+            </div>
+
+            <div class="quick-action" id="qa-send">
+              <div style="font-size:20px">📤</div>
+              <div>
+                <div style="font-weight:700">Kirim</div>
+                <div class="small-muted">Kirim ke teman</div>
+              </div>
+            </div>
+
+            <div class="quick-action" id="qa-withdraw">
+              <div style="font-size:20px">🏧</div>
+              <div>
+                <div style="font-weight:700">Tarik</div>
+                <div class="small-muted">Tarik ke rekening</div>
+              </div>
+            </div>
+
+            <div class="quick-action" id="qa-history">
+              <div style="font-size:20px">📜</div>
+              <div>
+                <div style="font-weight:700">Riwayat</div>
+                <div class="small-muted">Lihat semua transaksi</div>
+              </div>
+            </div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid rgba(15,23,42,0.03)" />
+
+          <div>
+            <h4 style="margin-bottom:8px">Keamanan</h4>
+            <div class="small-muted" style="margin-bottom:8px">Atur PIN transaksi untuk keamanan tambahan.</div>
+            <button class="btn primary" id="set-pin">Atur / Ubah PIN</button>
+          </div>
+        </div>
+
+        <!-- TRANSACTIONS / CONTENT -->
+        <div class="col-8 card" id="content-area">
+          <!-- Dashboard view by default -->
+          <div id="view-dashboard" class="view">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h3>Ringkasan</h3>
+              <div style="display:flex;gap:8px;align-items:center">
+                <label class="small-muted">Filter:</label>
+                <select id="filter-type" style="padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)">
+                  <option value="all">Semua</option>
+                  <option value="credit">Pemasukan</option>
+                  <option value="debit">Pengeluaran</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+              <div class="card" style="flex:1;min-width:180px">
+                <div class="small-muted">Pemasukan bulan ini</div>
+                <div style="font-weight:800;font-size:18px" id="income-month">Rp 0</div>
+              </div>
+              <div class="card" style="flex:1;min-width:180px">
+                <div class="small-muted">Pengeluaran bulan ini</div>
+                <div style="font-weight:800;font-size:18px" id="expense-month">Rp 0</div>
+              </div>
+              <div class="card" style="flex:1;min-width:180px">
+                <div class="small-muted">Transaksi hari ini</div>
+                <div style="font-weight:800;font-size:18px" id="tx-today">0</div>
+              </div>
+            </div>
+
+            <h4 style="margin-bottom:8px">Riwayat Terbaru</h4>
+            <div class="tx-list" id="tx-list">
+              <!-- JS inject -->
+            </div>
+          </div>
+
+          <!-- Kirim view -->
+          <div id="view-kirim" class="view" style="display:none">
+            <h3>Kirim Uang</h3>
+            <form id="form-send">
+              <div class="form-row">
+                <label>Ke (nama atau nomor)</label>
+                <input type="text" id="send-to" required placeholder="Nama atau nomor penerima" />
+              </div>
+              <div class="form-row">
+                <label>Nominal (Rp)</label>
+                <input type="number" id="send-amount" required min="1000" step="1000" placeholder="10000" />
+              </div>
+              <div class="form-row">
+                <label>Catatan (opsional)</label>
+                <input type="text" id="send-note" placeholder="Untuk beli pulsa..." />
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button type="button" class="btn ghost" id="send-cancel">Batal</button>
+                <button type="submit" class="btn primary">Kirim</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Terima / Top-up -->
+          <div id="view-terima" class="view" style="display:none">
+            <h3>Top-up / Terima</h3>
+            <form id="form-topup">
+              <div class="form-row">
+                <label>Sumber Top-up</label>
+                <select id="topup-source">
+                  <option value="bank">Transfer Bank</option>
+                  <option value="card">Kartu Debit/Kredit</option>
+                  <option value="goride">Retail / Mitra</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Nominal (Rp)</label>
+                <input type="number" id="topup-amount" min="1000" required placeholder="50000" />
+              </div>
+              <div class="form-row">
+                <label>Catatan</label>
+                <input type="text" id="topup-note" placeholder="Top-up via transfer" />
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button type="button" class="btn ghost" id="topup-cancel">Batal</button>
+                <button type="submit" class="btn primary">Top-up</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tarik -->
+          <div id="view-tarik" class="view" style="display:none">
+            <h3>Tarik Tunai</h3>
+            <form id="form-withdraw">
+              <div class="form-row">
+                <label>Ke Rekening (nomor)</label>
+                <input type="text" id="withdraw-account" required placeholder="1234567890" />
+              </div>
+              <div class="form-row">
+                <label>Bank</label>
+                <input type="text" id="withdraw-bank" required placeholder="Nama Bank" />
+              </div>
+              <div class="form-row">
+                <label>Nominal (Rp)</label>
+                <input type="number" id="withdraw-amount" min="10000" required placeholder="100000" />
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button type="button" class="btn ghost" id="withdraw-cancel">Batal</button>
+                <button type="submit" class="btn primary">Tarik</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Riwayat -->
+          <div id="view-riwayat" class="view" style="display:none">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <h3>Riwayat Transaksi</h3>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="btn ghost" id="export-csv">Export CSV</button>
+                <button class="btn" id="clear-all">Hapus Semua</button>
+              </div>
+            </div>
+            <div style="margin-top:12px">
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+                <label class="small-muted">Sort:</label>
+                <select id="sort-order">
+                  <option value="new">Terbaru</option>
+                  <option value="old">Terlama</option>
+                </select>
+                <label class="small-muted">Filter kata:</label>
+                <input id="filter-text" placeholder="cari kata dalam catatan atau nama" style="padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)" />
+              </div>
+              <div class="tx-list" id="history-list"></div>
+            </div>
+          </div>
+
+          <!-- Profile -->
+          <div id="view-profile" class="view" style="display:none">
+            <h3>Profil & Keamanan</h3>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+              <div class="card" style="min-width:220px;flex:1">
+                <div class="small-muted">Nama</div>
+                <div style="font-weight:800">Deo Bagus Prayoga</div>
+                <div class="small-muted" style="margin-top:8px">Email</div>
+                <div>deogarrix1905@gmail.com</div>
+              </div>
+              <div class="card" style="min-width:220px;flex:1">
+                <div class="small-muted">Keamanan</div>
+                <div style="margin-top:8px">
+                  <div class="small-muted">PIN Transaksi</div>
+                  <div id="pin-status" style="font-weight:800;margin-top:6px">Belum diatur</div>
+                  <div style="margin-top:8px">
+                    <button class="btn primary" id="btn-set-pin">Atur/ubah PIN</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- generic placeholder for other views -->
+        </div>
+      </section>
+
+      <!-- modal for PIN / confirm -->
+      <div class="modal" id="modal">
+        <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+          <h3 id="dialog-title">Konfirmasi</h3>
+          <div id="dialog-body" style="margin-top:12px" class="small-muted">...</div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+            <button class="btn ghost" id="modal-cancel">Batal</button>
+            <button class="btn primary" id="modal-ok">Setuju</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- CTA akhir -->
-  <section class="section">
-    <div class="container card" style="display:grid;gap:10px;align-items:center;grid-template-columns:1.2fr .8fr">
-      <div>
-        <h2 style="margin:0">Siap mulai bersama <strong>KenzWeb</strong>?</h2>
-        <p class="note">Klik tombol di sebelah untuk konsultasi gratis via WhatsApp.</p>
-      </div>
-      <div style="justify-self:end">
-        <a class="btn" data-wa="Halo KenzWeb! Saya ingin konsultasi & cek ketersediaan jadwal.">Konsultasi Gratis</a>
-      </div>
-    </div>
-  </section>
+      <!-- tiny accessible status area -->
+      <div id="status" style="position:fixed;bottom:20px;right:20px;z-index:90"></div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
-      <div>© <span id="year"></span> KenzWeb. Semua hak dilindungi.</div>
-      <div style="display:flex;gap:12px">
-        <a href="#layanan">Layanan</a>
-        <a href="#harga">Harga</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#faq">FAQ</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Floating WhatsApp Button -->
-  <div class="float-wa">
-    <a class="btn" style="background:#25d366;border-radius:999px;border-color:#1ab455;color:#032b12" data-wa="Halo KenzWeb! Saya ingin tanya soal jasa joki website.">💬 WhatsApp</a>
+    </main>
   </div>
 
-  <script>
-    // Update tahun otomatis
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+<script>
+/*
+  KenzDompet - Single-file demo wallet
+  - Data stored in localStorage under key 'kenz_data'
+  - Transactions: {id, type: 'credit'|'debit', amount, name, note, date}
+  - Balance updated based on transactions
+  - Basic PIN stored hashed (simple) in localStorage (demo only)
+*/
 
-  <!-- SEO: Schema.org JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "KenzWeb — Jasa Joki Website",
-    "description": "Jasa pembuatan dan perbaikan website. Landing page, e‑commerce, company profile, dan custom web app.",
-    "areaServed": "Indonesia",
-    "url": "https://example.com/",
-    "telephone": "+${WA_NUMBER}",
-    "sameAs": [
-      "https://wa.me/${WA_NUMBER}"
-    ],
-    "serviceType": ["Website Development", "Website Maintenance", "SEO"],
-    "brand": {"@type":"Brand","name":"KenzWeb"}
+/* ====== Utilities ====== */
+const rupiah = n => {
+  const x = Number(n || 0);
+  return 'Rp ' + x.toLocaleString('id-ID');
+}
+const uid = () => 'tx-' + Math.random().toString(36).slice(2,10);
+const nowISO = () => new Date().toISOString();
+const formatDate = iso => {
+  const d = new Date(iso);
+  return d.toLocaleString('id-ID', {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+/* ====== Storage ====== */
+const STORAGE_KEY = 'kenz_data_v1';
+function loadState(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw) return {transactions: [], pinHash: null};
+  try{ return JSON.parse(raw); } catch(e){ return {transactions: [], pinHash:null}; }
+}
+function saveState(state){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* ====== App state ====== */
+let state = loadState();
+
+/* ====== Balance computations ====== */
+function computeBalance(){
+  let bal = 0;
+  for(const t of state.transactions){
+    if(t.type === 'credit') bal += Number(t.amount);
+    else bal -= Number(t.amount);
   }
-  </script>
+  return bal;
+}
+function summaryThisMonth(){
+  const now = new Date();
+  const mm = now.getMonth(), yy = now.getFullYear();
+  let income = 0, expense = 0, todayCount = 0;
+  for(const t of state.transactions){
+    const d = new Date(t.date);
+    if(d.getMonth() === mm && d.getFullYear() === yy){
+      if(t.type === 'credit') income += Number(t.amount);
+      else expense += Number(t.amount);
+    }
+    const nd = new Date();
+    if(d.toDateString() === nd.toDateString()) todayCount++;
+  }
+  return {income, expense, todayCount};
+}
+
+/* ====== UI Hooks ====== */
+const el = id => document.getElementById(id);
+const views = document.querySelectorAll('.view');
+const navButtons = document.querySelectorAll('.nav-btn');
+
+function showView(name){
+  views.forEach(v => v.style.display = v.id === 'view-'+name ? '' : 'none');
+  navButtons.forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+}
+
+/* ====== Render functions ====== */
+function renderBalances(){
+  const bal = computeBalance();
+  el('main-balance').textContent = rupiah(bal);
+  el('side-balance').textContent = rupiah(bal);
+  const s = summaryThisMonth();
+  el('income-month').textContent = rupiah(s.income);
+  el('expense-month').textContent = rupiah(s.expense);
+  el('tx-today').textContent = s.todayCount;
+  // tx count for dashboard
+  const filtered = recentTransactions(10);
+  renderTxList(filtered, el('tx-list'));
+  renderHistory();
+  // pin status
+  el('pin-status').textContent = state.pinHash ? 'Sudah diatur' : 'Belum diatur';
+}
+
+function recentTransactions(n=8){
+  // newest first
+  return state.transactions.slice().sort((a,b)=> b.date.localeCompare(a.date)).slice(0,n);
+}
+
+function renderTxList(list, container){
+  container.innerHTML = '';
+  if(!list.length){ container.innerHTML = '<div class="small-muted">Belum ada transaksi</div>'; return; }
+  for(const t of list){
+    const it = document.createElement('div');
+    it.className = 'tx-item';
+    it.innerHTML = `
+      <div class="tx-left">
+        <div class="tx-type ${t.type==='credit' ? 'credit' : 'debit'}">${t.type==='credit' ? '+' : '-'}</div>
+        <div>
+          <div style="font-weight:700">${t.name || (t.type==='credit'?'Penerimaan':'Pengeluaran')}</div>
+          <div class="tx-meta small-muted">${formatDate(t.date)} · ${t.note || '-'}</div>
+        </div>
+      </div>
+      <div class="tx-right">
+        <div class="tx-amount">${t.type==='credit'?'+':'-'} ${rupiah(t.amount)}</div>
+      </div>
+    `;
+    container.appendChild(it);
+  }
+}
+
+function renderHistory(){
+  const list = state.transactions.slice();
+  const sort = el('sort-order')?.value || 'new';
+  list.sort((a,b)=> sort==='new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date));
+  const filterText = el('filter-text')?.value?.toLowerCase?.() || '';
+  const filtered = list.filter(t => (t.name||'').toLowerCase().includes(filterText) || (t.note||'').toLowerCase().includes(filterText));
+  renderTxList(filtered, el('history-list'));
+}
+
+/* ====== Actions (create transaction) ====== */
+function addTransaction({type, amount, name, note}){
+  const tx = {id: uid(), type, amount: Number(amount), name: name||'', note: note||'', date: nowISO()};
+  state.transactions.push(tx);
+  saveState(state);
+  renderBalances();
+  showStatus((type==='credit'?'Pemasukan ':'Pengeluaran ') + rupiah(amount) + ' berhasil', 'success');
+}
+
+/* ====== Simple PIN (demo) ====== */
+/* WARNING: hashing here is trivial (not secure). For demo only. */
+function hashPin(pin){
+  // basic hash: reverse + base64 (demo)
+  return btoa(pin.split('').reverse().join(''));
+}
+function verifyPin(pin){
+  return state.pinHash && hashPin(pin) === state.pinHash;
+}
+
+/* ====== Modal helpers ====== */
+const modal = el('modal'), dialogBody = el('dialog-body'), modalOk = el('modal-ok'), modalCancel = el('modal-cancel');
+function openModal(title, body, okCb, cancelCb){
+  el('dialog-title').textContent = title;
+  dialogBody.textContent = body;
+  modal.classList.add('open');
+  modalOk.onclick = () => { modal.classList.remove('open'); okCb && okCb(); };
+  modalCancel.onclick = () => { modal.classList.remove('open'); cancelCb && cancelCb(); };
+}
+modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('open'); });
+
+/* ====== Status toast ====== */
+function showStatus(message, type='info', timeout=2500){
+  const s = document.createElement('div');
+  s.style.background = 'white';
+  s.style.padding = '10px 14px';
+  s.style.borderRadius = '10px';
+  s.style.boxShadow = '0 8px 20px rgba(2,6,23,0.12)';
+  s.style.marginTop = '8px';
+  s.style.fontWeight = 700;
+  s.textContent = message;
+  el('status').appendChild(s);
+  setTimeout(()=> s.style.opacity = '0.01', timeout-400);
+  setTimeout(()=> s.remove(), timeout);
+}
+
+/* ====== Events wiring ====== */
+document.addEventListener('click', (e)=>{
+  const nav = e.target.closest('.nav-btn');
+  if(nav){
+    showView(nav.dataset.view);
+  }
+});
+
+document.getElementById('send-btn').addEventListener('click', ()=> showView('kirim'));
+document.getElementById('topup-btn').addEventListener('click', ()=> showView('terima'));
+document.getElementById('btn-topup-sidebar').addEventListener('click', ()=> showView('terima'));
+document.getElementById('btn-send-sidebar').addEventListener('click', ()=> showView('kirim'));
+document.getElementById('qa-topup').addEventListener('click', ()=> showView('terima'));
+document.getElementById('qa-send').addEventListener('click', ()=> showView('kirim'));
+document.getElementById('qa-withdraw').addEventListener('click', ()=> showView('tarik'));
+document.getElementById('qa-history').addEventListener('click', ()=> showView('riwayat'));
+
+el('form-send').addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const to = el('send-to').value.trim();
+  const amt = Number(el('send-amount').value);
+  const note = el('send-note').value.trim();
+  if(!to || !amt || amt <= 0){ showStatus('Periksa data pengiriman', 'error'); return; }
+  // ask PIN if set
+  if(state.pinHash){
+    const pin = prompt('Masukkan PIN transaksi:');
+    if(!verifyPin(pin)){ showStatus('PIN salah', 'error'); return; }
+  }
+  // check balance
+  if(computeBalance() < amt){
+    showStatus('Saldo tidak cukup', 'error'); return;
+  }
+  // confirm
+  openModal('Konfirmasi kirim', `Kirim ${rupiah(amt)} ke ${to}?`, ()=>{
+    addTransaction({type:'debit', amount:amt, name:to, note});
+    el('form-send').reset();
+  });
+});
+
+el('form-topup').addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const amt = Number(el('topup-amount').value);
+  const note = el('topup-note').value.trim();
+  if(!amt || amt <= 0){ showStatus('Nominal tidak valid', 'error'); return; }
+  openModal('Konfirmasi Top-up', `Terima top-up ${rupiah(amt)}?`, ()=>{
+    addTransaction({type:'credit', amount:amt, name:'Top-up', note});
+    el('form-topup').reset();
+  });
+});
+
+el('form-withdraw').addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const acc = el('withdraw-account').value.trim();
+  const bank = el('withdraw-bank').value.trim();
+  const amt = Number(el('withdraw-amount').value);
+  if(!acc || !bank || !amt || amt <= 0){ showStatus('Periksa data tarik', 'error'); return; }
+  if(computeBalance() < amt){ showStatus('Saldo tidak cukup', 'error'); return; }
+  if(state.pinHash){
+    const pin = prompt('Masukkan PIN transaksi:');
+    if(!verifyPin(pin)){ showStatus('PIN salah', 'error'); return; }
+  }
+  openModal('Konfirmasi Tarik', `Tarik ${rupiah(amt)} ke ${bank} (${acc})?`, ()=>{
+    addTransaction({type:'debit', amount:amt, name:bank, note:`Tarik ke ${acc}`});
+    el('form-withdraw').reset();
+  });
+});
+
+el('filter-type')?.addEventListener('change', (e)=>{
+  const v = e.target.value;
+  let list = state.transactions.slice();
+  if(v === 'credit') list = list.filter(t=> t.type==='credit');
+  else if(v === 'debit') list = list.filter(t=> t.type==='debit');
+  list = list.sort((a,b)=> b.date.localeCompare(a.date)).slice(0,10);
+  renderTxList(list, el('tx-list'));
+});
+
+el('tx-search').addEventListener('input', (e)=>{
+  const q = e.target.value.toLowerCase();
+  const list = state.transactions.filter(t => (t.name||'').toLowerCase().includes(q) || (t.note||'').toLowerCase().includes(q));
+  renderTxList(list.slice(0,20), el('tx-list'));
+});
+
+// Export CSV
+el('export-csv').addEventListener('click', ()=>{
+  if(!state.transactions.length){ showStatus('Tidak ada data untuk diexport'); return; }
+  const rows = [['id','type','amount','name','note','date']];
+  for(const t of state.transactions) rows.push([t.id,t.type,t.amount,t.name?.replace(/,/g,' '),t.note?.replace(/,/g,' '),t.date]);
+  const csv = rows.map(r=> r.join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'kenzdompet_transactions.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  showStatus('Export CSV siap di-download');
+});
+
+// Clear all
+el('clear-all').addEventListener('click', ()=>{
+  openModal('Hapus semua data', 'Anda yakin ingin menghapus semua transaksi? Tindakan ini tidak dapat dibatalkan.', ()=>{
+    state.transactions = [];
+    saveState(state);
+    renderBalances();
+  });
+});
+
+// sort and filter hooks
+el('sort-order').addEventListener('change', renderHistory);
+el('filter-text').addEventListener('input', renderHistory);
+
+// PIN set/change
+el('btn-set-pin').addEventListener('click', ()=> {
+  const newPin = prompt('Masukkan PIN baru (4-6 digit):');
+  if(!newPin || String(newPin).length < 4){ showStatus('PIN tidak valid'); return; }
+  const confirm = prompt('Konfirmasi PIN baru:');
+  if(newPin !== confirm){ showStatus('Konfirmasi PIN tidak cocok'); return; }
+  state.pinHash = hashPin(newPin);
+  saveState(state);
+  renderBalances();
+  showStatus('PIN berhasil diatur', 'success');
+});
+
+el('set-pin').addEventListener('click', ()=> el('btn-set-pin').click());
+el('btn-set-pin').addEventListener('click', ()=> {}); // already bound above
+
+// small cancellations
+el('send-cancel').addEventListener('click', ()=> { el('form-send').reset(); showView('dashboard'); });
+el('topup-cancel').addEventListener('click', ()=> { el('form-topup').reset(); showView('dashboard'); });
+el('withdraw-cancel').addEventListener('click', ()=> { el('form-withdraw').reset(); showView('dashboard'); });
+
+// small UI triggers
+document.getElementById('btn-notif').addEventListener('click', ()=> showStatus('Tidak ada notifikasi baru'));
+document.getElementById('qr-btn').addEventListener('click', ()=> openModal('QR Code (demo)', 'Fitur scan / tampilkan QR akan tersedia di versi penuh.'));
+document.getElementById('btn-topup-sidebar').addEventListener('click', ()=> showView('terima'));
+
+// initialize nav default
+showView('dashboard');
+
+/* ====== Sample demo data if empty (for nicer demo) ====== */
+if(state.transactions.length === 0){
+  state.transactions = [
+    {id:uid(), type:'credit', amount:150000, name:'Gaji', note:'Gaji bulan ini', date:new Date(Date.now()-1000*60*60*24*7).toISOString()},
+    {id:uid(), type:'debit', amount:50000, name:'Toko A', note:'Belanja', date:new Date(Date.now()-1000*60*60*24*5).toISOString()},
+    {id:uid(), type:'debit', amount:20000, name:'Pulsa', note:'Beli pulsa', date:new Date(Date.now()-1000*60*60*24*2).toISOString()},
+    {id:uid(), type:'credit', amount:30000, name:'Teman', note:'Balikan uang', date:new Date(Date.now()-1000*60*60*12).toISOString()},
+  ];
+  saveState(state);
+}
+
+/* ====== Initial render ====== */
+renderBalances();
+
+/* Extra: show small quick hint */
+showStatus('Selamat mencoba KenzDompet! Klik Top-up untuk mulai isi saldo', 'info', 3500);
+
+</script>
 </body>
 </html>
