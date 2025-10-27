@@ -1,27 +1,258 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deobagus Prayoga - Google Cloud Engineer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alan Walker Music</title>
+  <style>
+    * {box-sizing: border-box; font-family: 'Poppins', sans-serif;}
+    body {
+      margin: 0;
+      background: url('alanwalker.jpg') center/cover no-repeat fixed;
+      /* ubah ini untuk ganti background */
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 0;
+    }
+    .phone {
+      width: 370px;
+      height: 740px;
+      border-radius: 40px;
+      background: rgba(20,20,20,0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .spotify-logo {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+    .screen {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .cover {
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
+      background: url('walker.jpg') center/cover;
+      margin-bottom: 20px;
+      animation: spin 8s linear infinite;
+      animation-play-state: paused;
+    }
+    @keyframes spin {
+      from {transform: rotate(0);}
+      to {transform: rotate(360deg);}
+    }
+    .title { font-size: 18px; font-weight: bold; text-align: center; }
+    .artist { font-size: 14px; color: #aaa; text-align: center; margin-bottom: 20px; }
+    .controls button {
+      margin: 0 8px;
+      background: #1DB954;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .controls button:hover { opacity: 0.85; }
+    .playlist {
+      margin-top: 20px;
+      width: 100%;
+      text-align: left;
+      font-size: 14px;
+    }
+    .playlist div {
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .playlist div.active {
+      background: rgba(29,185,84,0.3);
+    }
+    .power-btn {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1DB954;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    canvas {
+      width: 90%;
+      height: 60px;
+      margin-top: 20px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Deobagus Prayoga</h1>
-            <h2>Menjadi Google Cloud Engineer</h2>
-        </header>
-        <section class="about">
-            <p>Halo! Saya <strong>Deobagus Prayoga</strong>, seorang calon Google Cloud Engineer yang bersemangat dalam dunia cloud computing, infrastruktur, dan pengembangan aplikasi modern.</p>
-        </section>
-        <section class="contact">
-            <h3>Kontak Saya</h3>
-            <p>Email: <a href="mailto:deobagusprayoga@gmail.com">deobagusprayoga@gmail.com</a></p>
-        </section>
-        <footer>
-            <p>© 2025 Deobagus Prayoga. Dibuat dengan ❤️ dan semangat belajar Cloud.</p>
-        </footer>
+  <div class="overlay"></div>
+  <div class="phone">
+    <img src="sport.jpeg" class="spotify-logo" alt="Spotify Logo">
+    <div class="screen">
+      <div class="cover" id="cover"></div>
+      <div class="title" id="title">No track</div>
+      <div class="artist" id="artist">—</div>
+      <div class="controls">
+        <button id="prev">Prev</button>
+        <button id="play">Play</button>
+        <button id="next">Next</button>
+      </div>
+      <canvas id="visualizer"></canvas>
+      <div class="playlist" id="playlist"></div>
     </div>
+    <button class="power-btn" id="power">POWER ON</button>
+  </div>
+
+  <script>
+    const tracks = [
+      { title: "Hero", artist: "Alan Walker & Sasha Alex Sloan", file: "hero.mp3.mp3" },
+      { title: "Faded", artist: "Alan Walker", file: "faded.mp3.mp3" },
+      { title: "On My Way", artist: "Alan Walker ft. Sabrina Carpenter", file: "OnMyWay.mp3.mp3" }
+    ];
+
+    let current = 0;
+    let isPlaying = false;
+    let powered = false;
+
+    const audio = new Audio();
+    const cover = document.getElementById("cover");
+    const title = document.getElementById("title");
+    const artist = document.getElementById("artist");
+    const playBtn = document.getElementById("play");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    const playlist = document.getElementById("playlist");
+    const powerBtn = document.getElementById("power");
+    const canvas = document.getElementById("visualizer");
+    const ctx = canvas.getContext("2d");
+
+    // Audio context setup
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 128;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    // Unlock AudioContext on any user action
+    function unlockAudio() {
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume().then(() => {
+          console.log("🔊 AudioContext resumed manually");
+        }).catch(err => console.warn("Audio unlock failed:", err));
+      }
+    }
+    document.addEventListener("click", unlockAudio);
+    document.addEventListener("keydown", unlockAudio);
+    document.addEventListener("touchstart", unlockAudio);
+
+    function renderPlaylist() {
+      playlist.innerHTML = "";
+      tracks.forEach((t, i) => {
+        const div = document.createElement("div");
+        div.textContent = t.title + " - " + t.artist;
+        if (i === current) div.classList.add("active");
+        div.onclick = () => playTrack(i);
+        playlist.appendChild(div);
+      });
+    }
+
+    function playTrack(i) {
+      if (!powered) return alert("Power is off!");
+      current = i;
+      audio.src = tracks[i].file;
+      title.textContent = tracks[i].title;
+      artist.textContent = tracks[i].artist;
+      renderPlaylist();
+      playAudio();
+    }
+
+    function playAudio() {
+      unlockAudio();
+      audio.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = "Pause";
+        cover.style.animationPlayState = "running";
+      }).catch(err => {
+        console.warn("⚠️ Autoplay prevented:", err);
+        alert("Klik tombol Play sekali lagi untuk memulai suara 🎧");
+      });
+    }
+
+    function pauseAudio() {
+      audio.pause();
+      isPlaying = false;
+      playBtn.textContent = "Play";
+      cover.style.animationPlayState = "paused";
+    }
+
+    playBtn.onclick = () => {
+      if (!powered) return alert("Power is off!");
+      isPlaying ? pauseAudio() : playAudio();
+    };
+    prevBtn.onclick = () => playTrack((current - 1 + tracks.length) % tracks.length);
+    nextBtn.onclick = () => playTrack((current + 1) % tracks.length);
+
+    // Power Button (with guaranteed audio unlock)
+    powerBtn.onclick = async () => {
+      try {
+        await audioCtx.resume();
+        powered = !powered;
+        if (powered) {
+          powerBtn.textContent = "POWER OFF";
+          playTrack(current);
+        } else {
+          powerBtn.textContent = "POWER ON";
+          pauseAudio();
+        }
+      } catch (e) {
+        console.error(e);
+        alert("Browser belum mengizinkan audio. Klik di layar lalu tekan Power lagi.");
+      }
+    };
+
+    // Visualizer animation
+    function draw() {
+      requestAnimationFrame(draw);
+      analyser.getByteFrequencyData(dataArray);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = canvas.width / bufferLength;
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i] / 2;
+        ctx.fillStyle = "#1DB954";
+        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+      }
+    }
+    draw();
+    renderPlaylist();
+  </script>
 </body>
 </html>
